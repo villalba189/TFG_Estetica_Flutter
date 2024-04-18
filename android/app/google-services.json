@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "992077388118",
+    "project_id": "estetica-app-tfg",
+    "storage_bucket": "estetica-app-tfg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992077388118:android:4d5d31ba4d530fddeb9ef7",
+        "android_client_info": {
+          "package_name": "com.example.tfgFlutterAplicationEstetica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTDl6tpScxuPdemTnWiasIbDrqnkvmbCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

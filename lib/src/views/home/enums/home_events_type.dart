@@ -1,0 +1,4 @@
+enum HomeEventsType {
+  initialHome,
+  selectedIndex,
+}
