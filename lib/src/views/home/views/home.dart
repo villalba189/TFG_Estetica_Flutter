@@ -26,7 +26,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     int index = context.select((HomeBloc bloc) => bloc.selectedIndex);
     return Scaffold(
-      bottomNavigationBar: const EsteticaBottomNavBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: const EsteticaBottomNavBar(),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
