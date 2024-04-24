@@ -10,6 +10,7 @@ SliverAppBar esteticaBar(
     required bool actionsActive,
     required BuildContext context}) {
   return SliverAppBar(
+    shadowColor: Colors.grey,
     flexibleSpace: FlexibleSpaceBar(
       background: Container(
         color: Colors.white,

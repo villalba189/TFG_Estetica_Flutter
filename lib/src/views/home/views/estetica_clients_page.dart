@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:client_repository/client_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../class/bloc_events_class.dart';
 import '../blocs/client_page_bloc.dart';
-import '../enums/client_page_events_type.dart';
+import '../widgets/estetica_snack_bar.dart';
+import '../widgets/slider_client_list.dart';
 
 class ClientPage extends StatelessWidget {
   const ClientPage({super.key});
@@ -27,20 +30,14 @@ class ClientPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: clients
                 .map(
-                  (client) => ListTile(
-                    title: Text(client.name),
-                    subtitle: Text(client.phone ?? ''),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        context.read<ClientePageBloc>().add(
-                              Event(
-                                ClientPageEventsType.deleteClient,
-                                data: client.clientId,
-                              ),
-                            );
-                      },
-                    ),
+                  (client) => GestureDetector(
+                    onTap: () {
+                      log("Cliente añadido al ticket: ${client.clientId}");
+                      context.showSnackBar(
+                          message:
+                              'Cliente añadido al ticket ${client.name} ${client.surname}');
+                    },
+                    child: SlidableClient(client: client),
                   ),
                 )
                 .toList(),

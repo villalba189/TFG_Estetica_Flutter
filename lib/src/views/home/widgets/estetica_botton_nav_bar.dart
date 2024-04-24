@@ -12,7 +12,7 @@ class EsteticaBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int index = context.select((HomeBloc bloc) => bloc.selectedIndex);
+    final int index = context.select((HomeBloc bloc) => bloc.state.data ?? 0);
     return Container(
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(

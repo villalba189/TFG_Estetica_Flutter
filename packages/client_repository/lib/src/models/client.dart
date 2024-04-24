@@ -6,6 +6,7 @@ class ClientModel {
   final String? surname;
   final String? email;
   final String? phone;
+  final String? discount;
   final String? image;
 
   ClientModel({
@@ -14,6 +15,7 @@ class ClientModel {
     this.surname,
     this.email,
     this.phone,
+    this.discount,
     this.image,
   });
   ClientEntity toEntity() {
@@ -23,6 +25,7 @@ class ClientModel {
       surname: surname,
       email: email,
       phone: phone,
+      discount: discount,
       image: image,
     );
   }
@@ -34,6 +37,7 @@ class ClientModel {
       surname: entity.surname,
       email: entity.email,
       phone: entity.phone,
+      discount: entity.discount,
       image: entity.image,
     );
   }

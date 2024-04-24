@@ -1,0 +1,37 @@
+import 'package:service_repository/service_repository.dart';
+
+class ServiceModel {
+  final String serviceId;
+  final String name;
+  final String description;
+  final String price;
+  final String image;
+
+  ServiceModel({
+    required this.serviceId,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.image,
+  });
+
+  ServiceEntity toEntity() {
+    return ServiceEntity(
+      serviceId: serviceId,
+      name: name,
+      description: description,
+      price: price,
+      image: image,
+    );
+  }
+
+  static ServiceModel fromEntity(ServiceEntity entity) {
+    return ServiceModel(
+      serviceId: entity.serviceId,
+      name: entity.name,
+      description: entity.description,
+      price: entity.price,
+      image: entity.image,
+    );
+  }
+}

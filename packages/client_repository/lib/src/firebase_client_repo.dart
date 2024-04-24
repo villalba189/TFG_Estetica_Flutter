@@ -7,10 +7,13 @@ class FirebaseClientRepo extends ClientRepo {
   @override
   Future<List<ClientModel>> getClients() async {
     try {
-      return await clientsCollection.get().then((value) => value.docs
-          .map(
-              (doc) => ClientModel.fromEntity(ClientEntity.fromMap(doc.data())))
-          .toList());
+      return await clientsCollection
+          .orderBy('name', descending: false)
+          .get()
+          .then((value) => value.docs
+              .map((doc) =>
+                  ClientModel.fromEntity(ClientEntity.fromMap(doc.data())))
+              .toList());
     } catch (e) {
       throw Exception(e);
     }

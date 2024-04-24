@@ -31,13 +31,13 @@ dependencies:
   dio: ^5.4.3+1
   google_nav_bar: ^5.0.6
 
-  # user_repository:
-  #   path: packages/user_repository
-  # pizza_repository:
-  #   path: packages/pizza_repository
-
   client_repository:
     path: packages/client_repository
+  product_repository:
+    path: packages/product_repository
+  service_repository:
+    path: packages/service_repository
+  flutter_slidable: ^3.1.0
 
 dev_dependencies:
   flutter_test:

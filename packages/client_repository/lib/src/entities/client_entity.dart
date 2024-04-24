@@ -4,6 +4,7 @@ class ClientEntity {
   final String? surname;
   final String? email;
   final String? phone;
+  final String? discount;
   final String? image;
 
   ClientEntity({
@@ -12,6 +13,7 @@ class ClientEntity {
     this.surname,
     this.email,
     this.phone,
+    this.discount,
     this.image,
   });
 
@@ -22,6 +24,7 @@ class ClientEntity {
       'surname': surname,
       'email': email,
       'phone': phone,
+      'discount': discount,
       'image': image,
     };
   }
@@ -33,6 +36,7 @@ class ClientEntity {
       surname: map['surname'],
       email: map['email'],
       phone: map['phone'],
+      discount: map['discount'],
       image: map['image'],
     );
   }
