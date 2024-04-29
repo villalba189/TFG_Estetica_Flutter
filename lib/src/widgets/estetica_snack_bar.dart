@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../styles/colors.dart';
-import '../../../styles/spaces.dart';
+import '../styles/colors.dart';
+import '../styles/spaces.dart';
 
 extension ShowSnackBar on BuildContext {
   void showSnackBar({

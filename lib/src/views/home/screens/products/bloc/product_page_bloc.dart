@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 
-import '../../../class/bloc_events_class.dart';
+import '../../../../../class/bloc_events_class.dart';
 
 enum ProductPageEventsType {
   getProducts,

@@ -1,8 +1,17 @@
-import 'package:client_repository/client_repository.dart';
-import 'package:estetica_app/src/views/home/enums/client_page_events_type.dart';
+import 'dart:developer';
 
-import '../../../class/bloc_events_class.dart';
+import 'package:client_repository/client_repository.dart';
+
+import '../../../../../class/bloc_events_class.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+enum ClientPageEventsType {
+  addClient,
+  deleteClient,
+  updateClient,
+  getClientById,
+  getClients,
+}
 
 class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ClientRepo _clientRepository;
@@ -16,6 +25,7 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
           try {
             _clientRepository.getClients().then((value) {
               clients = value;
+              log('BlocGet: ${clients.length}');
             });
             emit.call(Success(event.eventType));
           } catch (e) {
@@ -37,7 +47,9 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _clientRepository.addClient(event.data as ClientModel);
+            clients.add(event.data as ClientModel);
             emit.call(Success(event.eventType));
+            log('BlocAdd: ${clients.length}');
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
@@ -46,7 +58,9 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _clientRepository.deleteClient(event.data as String);
+            clients.removeWhere((client) => client.clientId == event.data);
             emit.call(Success(event.eventType));
+            log('BlocDelete: ${clients.length}');
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
@@ -55,7 +69,12 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _clientRepository.updateClient(event.data as ClientModel);
-            emit(Event(ClientPageEventsType.updateClient));
+            int index = clients.indexWhere((client) =>
+                client.clientId == (event.data as ClientModel).clientId);
+            if (index != -1) {
+              clients[index] = event.data as ClientModel;
+            }
+            log('BlocUpdate: ${clients.length}');
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

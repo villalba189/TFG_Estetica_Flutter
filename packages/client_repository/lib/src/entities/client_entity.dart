@@ -1,6 +1,6 @@
 class ClientEntity {
-  final String clientId;
-  final String name;
+  final String? clientId;
+  final String? name;
   final String? surname;
   final String? email;
   final String? phone;
@@ -8,8 +8,8 @@ class ClientEntity {
   final String? image;
 
   ClientEntity({
-    required this.clientId,
-    required this.name,
+    this.clientId,
+    this.name,
     this.surname,
     this.email,
     this.phone,

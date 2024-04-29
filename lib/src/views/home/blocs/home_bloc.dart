@@ -1,7 +1,10 @@
-import 'package:estetica_app/src/views/home/enums/home_events_type.dart';
-
 import '../../../class/bloc_events_class.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+enum HomeEventsType {
+  initialHome,
+  selectedIndex,
+}
 
 class HomeBloc extends Bloc<BlocEvent, BlocEvent> {
   int selectedIndex = 0;

@@ -1,8 +1,8 @@
 import '../entities/entities.dart';
 
 class ClientModel {
-  final String clientId;
-  final String name;
+  final String? clientId;
+  final String? name;
   final String? surname;
   final String? email;
   final String? phone;
@@ -10,8 +10,8 @@ class ClientModel {
   final String? image;
 
   ClientModel({
-    required this.clientId,
-    required this.name,
+    this.clientId,
+    this.name,
     this.surname,
     this.email,
     this.phone,

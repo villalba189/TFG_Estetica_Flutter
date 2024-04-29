@@ -1,4 +1,0 @@
-enum HomeEventsType {
-  initialHome,
-  selectedIndex,
-}

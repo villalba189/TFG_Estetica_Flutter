@@ -5,7 +5,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../../class/bloc_events_class.dart';
 import '../../../styles/colors.dart';
 import '../blocs/home_bloc.dart';
-import '../enums/home_events_type.dart';
 
 class EsteticaBottomNavBar extends StatelessWidget {
   const EsteticaBottomNavBar({super.key});

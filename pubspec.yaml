@@ -20,6 +20,7 @@ dependencies:
   # Navigation
   go_router: ^10.1.2
   url_strategy: ^0.2.0
+  google_nav_bar: ^5.0.6
 
   # BLOC
   flutter_bloc: ^8.1.1
@@ -28,8 +29,6 @@ dependencies:
 
   #Firebase
   firebase_core: ^2.9.0
-  dio: ^5.4.3+1
-  google_nav_bar: ^5.0.6
 
   client_repository:
     path: packages/client_repository

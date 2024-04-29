@@ -1,14 +1,13 @@
 import 'dart:developer';
 
 import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/views/home/widgets/estetica_snack_bar.dart';
+import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_repository/service_repository.dart';
 
-import '../../../class/bloc_events_class.dart';
-import '../blocs/service_page_bloc.dart';
+import '../../../../../class/bloc_events_class.dart';
+import '../bloc/service_page_bloc.dart';
 
 class ServicePage extends StatelessWidget {
   const ServicePage({super.key});
