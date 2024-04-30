@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';

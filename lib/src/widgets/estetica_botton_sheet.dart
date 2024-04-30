@@ -1,10 +1,8 @@
 import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 
-import '../class/bloc_events_class.dart';
 import '../views/home/screens/products/bloc/product_page_bloc.dart';
 import '../views/home/screens/products/screens/create_update_products_screen.dart';
 import '../views/home/screens/services/bloc/service_page_bloc.dart';

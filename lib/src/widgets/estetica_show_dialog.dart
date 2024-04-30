@@ -30,9 +30,9 @@ extension ShowDeleteDialog on BuildContext {
           ),
           content: Text(
             product != null
-                ? "¿Estás seguro de eliminar el producto ${product!.name}?"
+                ? "¿Estás seguro de eliminar el producto ${product.name}?"
                 : service != null
-                    ? "¿Estás seguro de eliminar el servicio ${service!.name}?"
+                    ? "¿Estás seguro de eliminar el servicio ${service.name}?"
                     : "¿Estás seguro de eliminar al cliente ${client!.name}?",
             style: const TextStyle(
               color: Color(0xFF000000),
