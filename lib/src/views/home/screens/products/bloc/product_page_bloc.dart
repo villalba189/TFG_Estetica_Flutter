@@ -21,9 +21,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
         case ProductPageEventsType.getProducts:
           emit.call(Loading(event.eventType));
           try {
-            _productRepository.getProducts().then((value) {
-              products = value;
-            });
+            products = await _productRepository.getProducts();
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -46,6 +44,8 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _productRepository.addProduct(event.data as ProductModel);
+            products.add(event.data as ProductModel);
+
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -55,6 +55,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _productRepository.deleteProduct(event.data as String);
+            products.removeWhere((element) => element.productId == event.data);
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -64,7 +65,9 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             _productRepository.updateProduct(event.data as ProductModel);
-            emit(Event(ProductPageEventsType.updateProduct));
+            products.removeWhere((element) =>
+                element.productId == (event.data as ProductModel).productId);
+            products.add(event.data as ProductModel);
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

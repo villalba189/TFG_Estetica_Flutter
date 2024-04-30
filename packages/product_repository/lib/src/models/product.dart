@@ -1,20 +1,20 @@
 import 'package:product_repository/src/entities/entities.dart';
 
 class ProductModel {
-  final String productId;
-  final String name;
-  final String description;
-  final String price;
-  final String brand;
-  final String image;
+  final String? productId;
+  final String? name;
+  final String? description;
+  final String? price;
+  final String? brand;
+  final String? image;
 
   ProductModel({
-    required this.productId,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.brand,
-    required this.image,
+    this.productId,
+    this.name,
+    this.description,
+    this.price,
+    this.brand,
+    this.image,
   });
   ProductEntity toEntity() {
     return ProductEntity(

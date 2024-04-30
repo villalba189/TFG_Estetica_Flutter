@@ -13,20 +13,18 @@ enum ClientPageEventsType {
   getClients,
 }
 
-class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
+class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ClientRepo _clientRepository;
   List<ClientModel> clients = [];
-  ClientePageBloc(this._clientRepository)
+  ClientPageBloc(this._clientRepository)
       : super(Event(ClientPageEventsType.getClients)) {
     on<Event>((event, emit) async {
       switch (event.eventType) {
         case ClientPageEventsType.getClients:
           emit.call(Loading(event.eventType));
           try {
-            _clientRepository.getClients().then((value) {
-              clients = value;
-              log('BlocGet: ${clients.length}');
-            });
+            clients = await _clientRepository.getClients();
+
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -49,7 +47,6 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
             _clientRepository.addClient(event.data as ClientModel);
             clients.add(event.data as ClientModel);
             emit.call(Success(event.eventType));
-            log('BlocAdd: ${clients.length}');
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
@@ -60,7 +57,6 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
             _clientRepository.deleteClient(event.data as String);
             clients.removeWhere((client) => client.clientId == event.data);
             emit.call(Success(event.eventType));
-            log('BlocDelete: ${clients.length}');
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
@@ -74,7 +70,6 @@ class ClientePageBloc extends Bloc<BlocEvent, BlocEvent> {
             if (index != -1) {
               clients[index] = event.data as ClientModel;
             }
-            log('BlocUpdate: ${clients.length}');
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

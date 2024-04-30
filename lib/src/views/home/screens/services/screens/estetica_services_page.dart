@@ -14,7 +14,8 @@ class ServicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ServiceModel> services = context.read<ServicePageBloc>().services;
+    List<ServiceModel> services =
+        context.select((ServicePageBloc value) => value.services);
     return BlocBuilder<ServicePageBloc, BlocEvent>(
       builder: (context, state) {
         if (state is Loading) {
@@ -32,7 +33,6 @@ class ServicePage extends StatelessWidget {
                 .map(
                   (service) => GestureDetector(
                       onTap: () {
-                        log("Servicio añadido al ticket: ${service.serviceId}");
                         context.showSnackBar(
                             message:
                                 'Servicio añadido al ticket ${service.name}');
@@ -47,14 +47,14 @@ class ServicePage extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              service.name,
+                              service.name ?? "",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                               ),
                             ),
                             Text(
-                              service.description,
+                              service.description ?? "",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,

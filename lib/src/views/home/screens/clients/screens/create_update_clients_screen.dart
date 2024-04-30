@@ -1,5 +1,4 @@
 import 'package:client_repository/client_repository.dart';
-import 'package:estetica_app/src/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,8 +8,10 @@ import '../bloc/client_page_bloc.dart';
 
 class CreateUpdateClientsScreen extends StatelessWidget {
   final ClientModel? client;
+  final ClientPageBloc bloc;
 
-  const CreateUpdateClientsScreen({Key? key, this.client}) : super(key: key);
+  const CreateUpdateClientsScreen({Key? key, this.client, required this.bloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,33 @@ class CreateUpdateClientsScreen extends StatelessWidget {
     final TextEditingController phoneController =
         TextEditingController(text: client?.phone ?? '');
 
+    return BlocProvider.value(
+      value: bloc,
+      child: FormularioClient(
+          nameController: nameController,
+          emailController: emailController,
+          phoneController: phoneController,
+          client: client),
+    );
+  }
+}
+
+class FormularioClient extends StatelessWidget {
+  const FormularioClient({
+    super.key,
+    required this.nameController,
+    required this.emailController,
+    required this.phoneController,
+    required this.client,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController phoneController;
+  final ClientModel? client;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
       child: CustomScrollView(
@@ -57,7 +85,7 @@ class CreateUpdateClientsScreen extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         if (client != null) {
-                          context.read<ClientePageBloc>().add(
+                          context.read<ClientPageBloc>().add(
                                 Event(
                                   ClientPageEventsType.updateClient,
                                   data: ClientModel(
@@ -69,7 +97,7 @@ class CreateUpdateClientsScreen extends StatelessWidget {
                                 ),
                               );
                         } else {
-                          context.read<ClientePageBloc>().add(
+                          context.read<ClientPageBloc>().add(
                                 Event(
                                   ClientPageEventsType.addClient,
                                   data: ClientModel(
@@ -84,7 +112,7 @@ class CreateUpdateClientsScreen extends StatelessWidget {
                                 ),
                               );
                         }
-                        router.pop();
+                        Navigator.of(context).pop();
                       },
                       child:
                           Text(client != null ? 'Update Client' : 'Add Client'),

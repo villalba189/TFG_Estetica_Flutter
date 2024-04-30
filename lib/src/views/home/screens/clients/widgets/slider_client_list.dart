@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:client_repository/client_repository.dart';
-import 'package:estetica_app/src/routes/routes.dart';
+import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../../../class/bloc_events_class.dart';
 import '../../../../../styles/colors.dart';
 import '../bloc/client_page_bloc.dart';
+import '../screens/create_update_clients_screen.dart';
 
 class SlidableClient extends StatelessWidget {
   final ClientModel client;
@@ -17,7 +15,6 @@ class SlidableClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('slider: ${client.clientId!}');
     return Slidable(
       key: const ValueKey(0),
       startActionPane: ActionPane(
@@ -25,10 +22,10 @@ class SlidableClient extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) => context.read<ClientePageBloc>().add(
-                  Event(ClientPageEventsType.deleteClient,
-                      data: client.clientId),
-                ),
+            onPressed: (context) => context.showDeleteDialog(
+              client: client,
+              clientPageBloc: context.read<ClientPageBloc>(),
+            ),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -36,7 +33,12 @@ class SlidableClient extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) {
-              router.push('/client', extra: client);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_context) => CreateUpdateClientsScreen(
+                  client: client,
+                  bloc: context.read<ClientPageBloc>(),
+                ),
+              ));
             },
             backgroundColor: const Color(0xFF21B7CA),
             foregroundColor: Colors.white,

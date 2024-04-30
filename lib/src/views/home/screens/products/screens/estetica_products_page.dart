@@ -1,8 +1,6 @@
-import 'dart:developer';
-
-import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/views/home/screens/products/bloc/product_page_bloc.dart';
-import 'package:estetica_app/src/widgets/estetica_card.dart';
+import 'package:estetica_app/src/widgets/estetica_botton_sheet.dart';
+import 'package:estetica_app/src/views/home/components/estetica_card.dart';
 import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +13,8 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ProductModel> products = context.read<ProductPageBloc>().products;
+    List<ProductModel> products =
+        context.select((ProductPageBloc value) => value.products);
     return BlocBuilder<ProductPageBloc, BlocEvent>(
       builder: (context, state) {
         if (state is Loading) {
@@ -36,6 +35,11 @@ class ProductPage extends StatelessWidget {
                         context.showSnackBar(
                             message:
                                 'Producto añadido al ticket ${product.name}');
+                      },
+                      onLongPress: () {
+                        context.showCustomBottomSheet(
+                            product: product,
+                            productPageBloc: context.read<ProductPageBloc>());
                       },
                       child: EsteticaCard(product: product)),
                 )

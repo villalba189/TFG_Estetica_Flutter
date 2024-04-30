@@ -13,7 +13,7 @@ class EsteticaCard extends StatelessWidget {
       child: Stack(
         children: [
           Image.network(
-            product.image,
+            product.image ?? '',
           ),
           Positioned(
             bottom: 0,
@@ -39,7 +39,7 @@ class EsteticaCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    product.name ?? '',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,

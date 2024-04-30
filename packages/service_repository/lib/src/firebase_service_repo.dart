@@ -2,12 +2,12 @@ import '../service_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseServiceRepo implements ServiceRepo {
-  final serviceCollection = FirebaseFirestore.instance.collection('services');
+  final servicesCollection = FirebaseFirestore.instance.collection('services');
 
   @override
   Future<List<ServiceModel>> getServices() async {
     try {
-      return await serviceCollection.get().then((value) => value.docs
+      return await servicesCollection.get().then((value) => value.docs
           .map((doc) =>
               ServiceModel.fromEntity(ServiceEntity.fromMap(doc.data())))
           .toList());
@@ -19,7 +19,7 @@ class FirebaseServiceRepo implements ServiceRepo {
   @override
   Future<ServiceModel> getServicebyId(String serviceId) async {
     try {
-      return await serviceCollection.doc(serviceId).get().then((value) =>
+      return await servicesCollection.doc(serviceId).get().then((value) =>
           ServiceModel.fromEntity(ServiceEntity.fromMap(value.data()!)));
     } catch (e) {
       throw Exception(e);
@@ -29,7 +29,7 @@ class FirebaseServiceRepo implements ServiceRepo {
   @override
   Future<void> addService(ServiceModel service) async {
     try {
-      return await serviceCollection
+      return await servicesCollection
           .doc(service.serviceId)
           .set(service.toEntity().toMap());
     } catch (e) {
@@ -40,7 +40,7 @@ class FirebaseServiceRepo implements ServiceRepo {
   @override
   Future<void> deleteService(String serviceId) async {
     try {
-      return await serviceCollection.doc(serviceId).delete();
+      return await servicesCollection.doc(serviceId).delete();
     } catch (e) {
       throw Exception(e);
     }
@@ -49,7 +49,7 @@ class FirebaseServiceRepo implements ServiceRepo {
   @override
   Future<void> updateService(ServiceModel service) async {
     try {
-      return await serviceCollection
+      return await servicesCollection
           .doc(service.serviceId)
           .update(service.toEntity().toMap());
     } catch (e) {

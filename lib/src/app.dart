@@ -1,14 +1,23 @@
-import 'package:estetica_app/src/routes/routes.dart';
+import 'package:client_repository/client_repository.dart';
+import 'package:product_repository/product_repository.dart';
+import 'package:service_repository/service_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'class/bloc_events_class.dart';
 import 'styles/colors.dart';
+import 'views/home/blocs/home_bloc.dart';
+import 'views/home/screens/clients/bloc/client_page_bloc.dart';
+import 'views/home/screens/home_screen.dart';
+import 'views/home/screens/products/bloc/product_page_bloc.dart';
+import 'views/home/screens/services/bloc/service_page_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Estetica app TFG',
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
@@ -16,7 +25,27 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         canvasColor: Colors.transparent,
       ),
-      routerConfig: router,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<HomeBloc>(
+            create: (context) =>
+                HomeBloc()..add(Event(HomeEventsType.initialHome)),
+          ),
+          BlocProvider<ClientPageBloc>(
+            create: (context) => ClientPageBloc(FirebaseClientRepo())
+              ..add(Event(ClientPageEventsType.getClients)),
+          ),
+          BlocProvider<ProductPageBloc>(
+            create: (context) => ProductPageBloc(FirebaseProductRepo())
+              ..add(Event(ProductPageEventsType.getProducts)),
+          ),
+          BlocProvider<ServicePageBloc>(
+            create: (context) => ServicePageBloc(FirebaseServiceRepo())
+              ..add(Event(ServicePageEventsType.getServices)),
+          ),
+        ],
+        child: const MyHomePage(),
+      ),
     );
   }
 }
