@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/home_bloc.dart';
+import '../blocs/image_picker_cubit.dart';
 import 'clients/bloc/client_page_bloc.dart';
 import 'clients/screens/create_update_clients_screen.dart';
 import 'clients/screens/estetica_clients_page.dart';
@@ -56,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (_context) => CreateUpdateClientsScreen(
                   bloc: context.read<ClientPageBloc>(),
+                  cubit: context.read<ImagePickerCubit>(),
                 ),
               ));
               break;

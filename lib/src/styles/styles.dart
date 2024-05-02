@@ -8,4 +8,14 @@ class AppTextStyle {
     fontFamily: 'DancingScript',
     color: AppColors.primaryColor,
   );
+
+  static const labelTextField = TextStyle(
+    color: AppColors.primaryColor,
+    fontSize: 16,
+  );
+
+  static const TextStyle title = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
 }

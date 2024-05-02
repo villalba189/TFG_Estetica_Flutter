@@ -11,22 +11,13 @@ class ClientPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ClientPageBloc, BlocEvent>(
-      listener: (context, state) {
-        if (state is Failure) {
-          context.showSnackBar(message: state.data.toString(), isError: true);
-        }
-      },
+    return BlocBuilder<ClientPageBloc, BlocEvent>(
       builder: (context, state) {
         List<ClientModel> clients =
             context.select((ClientPageBloc bloc) => bloc.clients);
         if (state is Loading) {
           return const Center(
             child: CircularProgressIndicator(),
-          );
-        } else if (state is Failure) {
-          return Center(
-            child: Text(state.errorType),
           );
         } else {
           return Column(

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'class/bloc_events_class.dart';
 import 'styles/colors.dart';
 import 'views/home/blocs/home_bloc.dart';
+import 'views/home/blocs/image_picker_cubit.dart';
 import 'views/home/screens/clients/bloc/client_page_bloc.dart';
 import 'views/home/screens/home_screen.dart';
 import 'views/home/screens/products/bloc/product_page_bloc.dart';
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<ServicePageBloc>(
             create: (context) => ServicePageBloc(FirebaseServiceRepo())
               ..add(Event(ServicePageEventsType.getServices)),
+          ),
+          BlocProvider<ImagePickerCubit>(
+            create: (context) => ImagePickerCubit(),
           ),
         ],
         child: const MyHomePage(),

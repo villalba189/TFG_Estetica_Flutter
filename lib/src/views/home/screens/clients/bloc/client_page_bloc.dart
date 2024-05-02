@@ -13,9 +13,29 @@ enum ClientPageEventsType {
   getClients,
 }
 
+enum ClientPageErrorsType {
+  correoNoValido,
+  telefonoNoValido,
+  nombreNoValido,
+  apellidoNoValido,
+}
+
 class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ClientRepo _clientRepository;
   List<ClientModel> clients = [];
+
+  // The error message
+  String nameError = '';
+  String surnameError = '';
+  String emailError = '';
+  String phoneError = '';
+
+  // The visibility of the error messages
+  bool nameErrorVisible = false;
+  bool surnameErrorVisible = false;
+  bool emailErrorVisible = false;
+  bool phoneErrorVisible = false;
+
   ClientPageBloc(this._clientRepository)
       : super(Event(ClientPageEventsType.getClients)) {
     on<Event>((event, emit) async {
@@ -73,6 +93,97 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+      }
+      switch (event.eventType) {
+        case ClientPageErrorsType.nombreNoValido:
+          // Validación directa del nombre
+          String name = event.data as String;
+          final nameRegex = RegExp(
+              r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$'); // Aceptar solo letras, espacios y guiones, mínimo 2 caracteres
+          bool isValidName = nameRegex.hasMatch(name);
+          log(name);
+          if (name.isEmpty) {
+            emit.call(Failure(event.eventType));
+            nameError = 'Name is required';
+            nameErrorVisible = true;
+            return;
+          } else if (!isValidName) {
+            emit.call(Failure(event.eventType));
+            nameError = 'Invalid name';
+            nameErrorVisible = true;
+            return;
+          } else {
+            nameErrorVisible = false;
+            nameError = '';
+            emit.call(Success(event.eventType));
+          }
+          break;
+
+        case ClientPageErrorsType.apellidoNoValido:
+          // Validación directa del apellido
+          String surname = event.data as String;
+          final surnameRegex = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$');
+          bool isValidSurname = surnameRegex.hasMatch(surname);
+          if (surname.isEmpty) {
+            surnameErrorVisible = false;
+            surnameError = '';
+            emit.call(Success(event.eventType));
+            return;
+          } else if (!isValidSurname) {
+            emit.call(Failure(event.eventType));
+            surnameError = 'Invalid surname';
+            surnameErrorVisible = true;
+            return;
+          } else {
+            surnameErrorVisible = false;
+            surnameError = '';
+            emit.call(Success(event.eventType));
+          }
+          break;
+        case ClientPageErrorsType.correoNoValido:
+          // Validación directa del correo electrónico
+          String email = event.data as String;
+          final emailRegex = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+          bool isValidEmail = emailRegex.hasMatch(email);
+          if (email.isEmpty) {
+            emit.call(Failure(event.eventType));
+            emailError = 'Email is required';
+            emailErrorVisible = true;
+            return;
+          } else if (!isValidEmail) {
+            emit.call(Failure(event.eventType));
+            emailError = 'Invalid email';
+            emailErrorVisible = true;
+            return;
+          } else {
+            emailErrorVisible = false;
+            emailError = '';
+            emit.call(Success(event.eventType));
+          }
+          break;
+
+        case ClientPageErrorsType.telefonoNoValido:
+          // Validación directa del teléfono
+          String phone = event.data as String;
+          final phoneRegex = RegExp(
+              r'^[6-9]\d{8}$'); // Número de teléfono español de 9 dígitos
+          bool isValidPhone = phoneRegex.hasMatch(phone);
+          if (phone.isEmpty) {
+            emit.call(Failure(event.eventType));
+            phoneError = 'Phone is required';
+            phoneErrorVisible = true;
+            return;
+          } else if (!isValidPhone) {
+            emit.call(Failure(event.eventType));
+            phoneError = 'Invalid phone';
+            phoneErrorVisible = true;
+            return;
+          } else {
+            phoneErrorVisible = false;
+            phoneError = '';
+            emit.call(Success(event.eventType));
           }
           break;
       }

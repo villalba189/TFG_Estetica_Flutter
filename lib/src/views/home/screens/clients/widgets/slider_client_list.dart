@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../../styles/colors.dart';
+import '../../../blocs/image_picker_cubit.dart';
 import '../bloc/client_page_bloc.dart';
 import '../screens/create_update_clients_screen.dart';
 
@@ -37,6 +38,7 @@ class SlidableClient extends StatelessWidget {
                 builder: (_context) => CreateUpdateClientsScreen(
                   client: client,
                   bloc: context.read<ClientPageBloc>(),
+                  cubit: context.read<ImagePickerCubit>(),
                 ),
               ));
             },
@@ -48,19 +50,42 @@ class SlidableClient extends StatelessWidget {
         ],
       ),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.colorListClient,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(
-              color: Colors.grey,
-              width: 0.5,
+              color: AppColors.colorGrey,
+              width: 1,
             ),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(0, 2), // Cambios en la sombra
+            ),
+          ],
         ),
         child: ListTile(
-          title: Text("${client.name} ${client.surname}"),
+          title: Text("${client.name} ${client.surname ?? ''}"),
           subtitle: Text(client.email ?? ''),
           trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          leading: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: NetworkImage(client.image ?? ''),
+                fit: BoxFit.cover,
+                onError: (_, __) => const Icon(Icons.person),
+              ),
+            ),
+            child: client.image == null
+                ? const Icon(Icons.person, size: 30)
+                : null,
+          ),
         ),
       ),
     );
