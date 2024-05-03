@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:client_repository/client_repository.dart';
 import 'package:estetica_app/src/styles/spaces.dart';
@@ -84,8 +84,11 @@ class FormularioClient extends StatelessWidget {
         context.select((ClientPageBloc bloc) => bloc.emailError);
     String phoneError =
         context.select((ClientPageBloc bloc) => bloc.phoneError);
-    String imagen = context.select((ImagePickerCubit cubit) => cubit.state);
 
+    String imagePath = context.select((ClientPageBloc bloc) => bloc.imagePath);
+
+    String image =
+        context.select((ImagePickerCubit cubit) => cubit.imageFile?.path ?? '');
     return GestureDetector(
       onTap: () => clearFocusAndHideKeyboard(context),
       child: Scaffold(
@@ -105,17 +108,10 @@ class FormularioClient extends StatelessWidget {
                     children: [
                       AppSpaces.spaceH24,
                       ImagePickerWidget(
-                        onImageSelected: (image) {
-                          context.read<ImagePickerCubit>().setImageFile(image);
+                        onImageSelected: (_image) {
+                          context.read<ImagePickerCubit>().setImageFile(_image);
                         },
-                        imagePath: context
-                                    .watch<ImagePickerCubit>()
-                                    .imageFile
-                                    ?.path
-                                    .isNotEmpty ??
-                                false
-                            ? context.watch<ImagePickerCubit>().imageFile!.path
-                            : client?.image ?? '',
+                        imagePath: client?.image ?? image,
                       ),
                       AppSpaces.spaceH24,
                       EsteticaTextFormField(
@@ -195,6 +191,18 @@ class FormularioClient extends StatelessWidget {
                                 nameController.text.isNotEmpty,
                           ),
                           onTapFunction: () {
+                            context.read<ClientPageBloc>().add(
+                                  Event(ClientPageEventsType.addImagenStorage,
+                                      data: [
+                                        client?.clientId ??
+                                            FirebaseClientRepo()
+                                                .clientsCollection
+                                                .doc()
+                                                .id,
+                                        nameController.text,
+                                        image
+                                      ]),
+                                );
                             if (client != null) {
                               context.read<ClientPageBloc>().add(
                                     Event(
@@ -205,7 +213,8 @@ class FormularioClient extends StatelessWidget {
                                         surname: surnameController.text,
                                         email: emailController.text,
                                         phone: phoneController.text,
-                                        image: imagen,
+                                        image:
+                                            imagePath == '' ? null : imagePath,
                                       ),
                                     ),
                                   );
@@ -222,11 +231,13 @@ class FormularioClient extends StatelessWidget {
                                         surname: surnameController.text,
                                         email: emailController.text,
                                         phone: phoneController.text,
-                                        image: imagen,
+                                        image:
+                                            imagePath == '' ? null : imagePath,
                                       ),
                                     ),
                                   );
                             }
+                            context.read<ImagePickerCubit>().removeImage();
                             Navigator.of(context).pop();
                           },
                         ),

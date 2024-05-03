@@ -11,6 +11,7 @@ enum ClientPageEventsType {
   updateClient,
   getClientById,
   getClients,
+  addImagenStorage,
 }
 
 enum ClientPageErrorsType {
@@ -35,6 +36,9 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
   bool surnameErrorVisible = false;
   bool emailErrorVisible = false;
   bool phoneErrorVisible = false;
+
+// The path of the image
+  String imagePath = '';
 
   ClientPageBloc(this._clientRepository)
       : super(Event(ClientPageEventsType.getClients)) {
@@ -64,7 +68,7 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
         case ClientPageEventsType.addClient:
           emit.call(Loading(event.eventType));
           try {
-            _clientRepository.addClient(event.data as ClientModel);
+            await _clientRepository.addClient(event.data as ClientModel);
             clients.add(event.data as ClientModel);
             emit.call(Success(event.eventType));
           } catch (e) {
@@ -90,6 +94,18 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
             if (index != -1) {
               clients[index] = event.data as ClientModel;
             }
+            emit.call(Success(event.eventType));
+          } catch (e) {
+            emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+        case ClientPageEventsType.addImagenStorage:
+          emit.call(Loading(event.eventType));
+          try {
+            imagePath = _clientRepository.addImagenStorage(
+                event.data[0] as String,
+                event.data[1] as String,
+                event.data[2] as String) as String;
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

@@ -1,3 +1,4 @@
+import 'package:estetica_app/src/class/bloc_events_class.dart';
 import 'package:estetica_app/src/components/estetica_appbar.dart';
 import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/views/home/components/estetica_botton_nav_bar.dart';

@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 
 typedef OnImageSelected = Function(File imageFile);
 
-// ignore: must_be_immutable
 class ImagePickerWidget extends StatelessWidget {
   final String? imagePath;
   final OnImageSelected onImageSelected;

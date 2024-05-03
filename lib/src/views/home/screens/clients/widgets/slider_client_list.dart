@@ -79,7 +79,7 @@ class SlidableClient extends StatelessWidget {
               image: DecorationImage(
                 image: NetworkImage(client.image ?? ''),
                 fit: BoxFit.cover,
-                onError: (_, __) => const Icon(Icons.person),
+                onError: (_, __) => const Icon(Icons.person, size: 30),
               ),
             ),
             child: client.image == null

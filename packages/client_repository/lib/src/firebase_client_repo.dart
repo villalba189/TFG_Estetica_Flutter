@@ -1,8 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:client_repository/client_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseClientRepo extends ClientRepo {
   final clientsCollection = FirebaseFirestore.instance.collection('clients');
+  final ref = FirebaseStorage.instance.ref();
 
   @override
   Future<List<ClientModel>> getClients() async {
@@ -57,6 +62,28 @@ class FirebaseClientRepo extends ClientRepo {
           .update(client.toEntity().toMap());
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  @override
+  Future<String> addImagenStorage(
+      String id, String name, String imagePath) async {
+    log('Intentando cargar la imagen: $imagePath para el cliente $id con el nombre de archivo $name');
+    try {
+      final file = File(imagePath);
+      if (!file.existsSync()) {
+        log('Archivo no encontrado: $imagePath');
+        throw FileSystemException("Archivo no encontrado: $imagePath");
+      }
+
+      final ref = this.ref.child('clients').child(id).child(name);
+      var task = await ref.putFile(file);
+      final url = await task.ref.getDownloadURL();
+      log('Imagen cargada exitosamente: $url');
+      return url;
+    } catch (e) {
+      log('Error al cargar imagen: $e');
+      rethrow; // Esto permitirá que se maneje más arriba en la cadena.
     }
   }
 }

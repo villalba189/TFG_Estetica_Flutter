@@ -13,4 +13,9 @@ class ImagePickerCubit extends Cubit<String> {
     imageFile = image;
     emit(imageFile!.path);
   }
+
+  void removeImage() {
+    imageFile = null;
+    emit('');
+  }
 }
