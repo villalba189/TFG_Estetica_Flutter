@@ -3,6 +3,7 @@ import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ticket_repository/ticket_repository.dart';
 
 import 'class/bloc_events_class.dart';
 import 'styles/colors.dart';
@@ -12,6 +13,7 @@ import 'views/home/screens/clients/bloc/client_page_bloc.dart';
 import 'views/home/screens/home_screen.dart';
 import 'views/home/screens/products/bloc/product_page_bloc.dart';
 import 'views/home/screens/services/bloc/service_page_bloc.dart';
+import 'views/home/screens/ticket/bloc/ticket_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -47,8 +49,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<ImagePickerCubit>(
             create: (context) => ImagePickerCubit(),
           ),
+          BlocProvider(
+              create: (context) => TicketBloc(FirebaseTicketRepo())
+                ..add(Event(TicketEventType.initial))),
         ],
-        child: const MyHomePage(),
+        child: MyHomePage(),
       ),
     );
   }

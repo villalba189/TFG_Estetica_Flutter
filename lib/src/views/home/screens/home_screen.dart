@@ -4,6 +4,7 @@ import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/views/home/components/estetica_botton_nav_bar.dart';
 import 'package:estetica_app/src/views/home/screens/products/bloc/product_page_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/products/screens/create_update_products_screen.dart';
+import 'package:estetica_app/src/views/home/screens/ticket/screens/ticket_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,14 +18,9 @@ import 'services/bloc/service_page_bloc.dart';
 import 'services/screens/create_update_services_screen.dart';
 import 'services/screens/estetica_services_page.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyHomePage extends StatelessWidget {
+  MyHomePage({super.key});
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> esteticaPages = [
     const ProductPage(),
     const ServicePage(),
@@ -36,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
     int index = context.select((HomeBloc bloc) => bloc.selectedIndex);
     return Scaffold(
       bottomNavigationBar: const EsteticaBottomNavBar(),
+      drawer: const TicketScreen(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         onPressed: () {
@@ -73,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 titulo: 'Estetica Beatriz',
                 leadingActive: false,
                 actionsActive: true,
+                ticketActive: true,
                 context: context),
             SliverList(
               delegate: SliverChildListDelegate(

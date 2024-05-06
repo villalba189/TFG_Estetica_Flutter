@@ -7,6 +7,7 @@ SliverAppBar esteticaBar(
     {required String titulo,
     required bool leadingActive,
     required bool actionsActive,
+    required bool ticketActive,
     required BuildContext context}) {
   return SliverAppBar(
     shadowColor: Colors.grey,
@@ -22,18 +23,30 @@ SliverAppBar esteticaBar(
     automaticallyImplyLeading: false,
     title: Row(
       children: [
-        leadingActive
-            ? Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Icon(
-                    leadingActive ? Icons.arrow_back_sharp : null,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              )
-            : Container(),
+        if (leadingActive) ...[
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child:
+                  Icon(Icons.arrow_back_sharp, color: AppColors.primaryColor),
+            ),
+          )
+        ],
+        if (ticketActive) ...[
+          Builder(
+            // Usar Builder para obtener el context correcto
+            builder: (newContext) => Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: GestureDetector(
+                onTap: () {
+                  Scaffold.of(newContext).openDrawer(); // Usar newContext aquí
+                },
+                child: Icon(Icons.receipt, color: AppColors.primaryColor),
+              ),
+            ),
+          ),
+        ],
         Expanded(
           child: Center(
             child: Text(
@@ -45,21 +58,18 @@ SliverAppBar esteticaBar(
       ],
     ),
     actions: [
-      actionsActive
-          ? Container(
-              padding: const EdgeInsets.all(7.0),
-              margin: const EdgeInsets.only(right: 5),
-              decoration: const ShapeDecoration(
-                color: AppColors.primaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              ),
-              child: const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-            )
-          : Container(),
+      if (actionsActive) ...[
+        Container(
+          padding: const EdgeInsets.all(7.0),
+          margin: const EdgeInsets.only(right: 5),
+          decoration: const ShapeDecoration(
+            color: AppColors.primaryColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          ),
+          child: const Icon(Icons.settings, color: Colors.white),
+        ),
+      ]
     ],
   );
 }

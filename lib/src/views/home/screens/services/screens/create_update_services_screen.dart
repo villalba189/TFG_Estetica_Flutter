@@ -57,6 +57,7 @@ class FormularioService extends StatelessWidget {
               titulo: 'Estetica Beatriz',
               leadingActive: true,
               actionsActive: false,
+              ticketActive: false,
               context: context),
           SliverList(
             delegate: SliverChildListDelegate([
