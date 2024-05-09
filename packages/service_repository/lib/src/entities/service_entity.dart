@@ -10,7 +10,7 @@ class ServiceEntity {
   final String? serviceId;
   final String? name;
   final String? description;
-  final String? price;
+  final double? price;
   final String? image;
 
   Map<String, dynamic> toMap() {
@@ -28,7 +28,7 @@ class ServiceEntity {
       serviceId: map['serviceId'],
       name: map['name'],
       description: map['description'],
-      price: map['price'],
+      price: (map['price'] as num).toDouble(),
       image: map['image'],
     );
   }

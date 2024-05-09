@@ -81,6 +81,9 @@ class EsteticaTextFormField extends StatelessWidget {
               enabled: onChanged != null,
               maxLength: model.maxLength,
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
                 counterText: model.maxLength != null ? '' : null,
                 contentPadding: const EdgeInsets.all(8.0),
                 hintText: model.hintText,

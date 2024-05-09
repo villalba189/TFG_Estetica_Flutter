@@ -25,6 +25,7 @@ class CreateUpdateClientsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cubit.removeImage();
     final TextEditingController nameController =
         TextEditingController(text: client?.name ?? '');
     final TextEditingController emailController =
@@ -85,172 +86,238 @@ class FormularioClient extends StatelessWidget {
     String phoneError =
         context.select((ClientPageBloc bloc) => bloc.phoneError);
 
-    String imagePath = context.select((ClientPageBloc bloc) => bloc.imagePath);
-
     String image =
         context.select((ImagePickerCubit cubit) => cubit.imageFile?.path ?? '');
-    return GestureDetector(
-      onTap: () => clearFocusAndHideKeyboard(context),
-      child: Scaffold(
-          body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            esteticaBar(
-                titulo: 'Estetica Beatriz',
-                leadingActive: true,
-                actionsActive: false,
-                ticketActive: false,
-                context: context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    children: [
-                      AppSpaces.spaceH24,
-                      ImagePickerWidget(
-                        onImageSelected: (_image) {
-                          context.read<ImagePickerCubit>().setImageFile(_image);
-                        },
-                        imagePath: client?.image ?? image,
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.text,
-                          controller: nameController,
-                          labelText: 'Name',
-                          hintText: 'Enter your name',
-                          errorText: nameErrorVisible ? nameError : null,
-                        ),
-                        onChanged: (String value) {
-                          read.add(
-                            Event(ClientPageErrorsType.nombreNoValido,
-                                data: value),
-                          );
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.text,
-                          controller: surnameController,
-                          labelText: 'Surname',
-                          hintText: 'Enter your surname',
-                          errorText: surnameErrorVisible ? surnameError : null,
-                        ),
-                        onChanged: (String value) {
-                          read.add(
-                            Event(ClientPageErrorsType.apellidoNoValido,
-                                data: value),
-                          );
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.email,
-                          controller: emailController,
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                          errorText: emailErrorVisible ? emailError : null,
-                        ),
-                        onChanged: (String value) {
-                          read.add(
-                            Event(ClientPageErrorsType.correoNoValido,
-                                data: value),
-                          );
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.phone,
-                          controller: phoneController,
-                          labelText: 'Phone',
-                          hintText: 'Enter your phone',
-                          errorText: phoneErrorVisible ? phoneError : null,
-                        ),
-                        onChanged: (String value) {
-                          read.add(
-                            Event(ClientPageErrorsType.telefonoNoValido,
-                                data: value),
-                          );
-                        },
-                      ),
-                      AppSpaces.spaceH36,
-                      SizedBox(
-                        width: double.infinity,
-                        child: EsteticaButton(
-                          model: EsteticaButtonModel(
-                            text: 'Save',
-                            type: EsteticaButtonType.primary,
-                            isEnable: !nameErrorVisible &&
-                                !surnameErrorVisible &&
-                                !emailErrorVisible &&
-                                !phoneErrorVisible &&
-                                nameController.text.isNotEmpty,
+    return BlocBuilder<ClientPageBloc, BlocEvent>(
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () => clearFocusAndHideKeyboard(context),
+          child: Scaffold(
+              body: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                esteticaBar(
+                    titulo: 'Estetica Beatriz',
+                    leadingActive: true,
+                    actionsActive: false,
+                    ticketActive: false,
+                    context: context),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        children: [
+                          AppSpaces.spaceH24,
+                          ImagePickerWidget(
+                            onImageSelected: (_image) {
+                              context
+                                  .read<ImagePickerCubit>()
+                                  .setImageFile(_image);
+                            },
+                            imagePath:
+                                (image == '' ? client?.image : image) ?? '',
                           ),
-                          onTapFunction: () {
-                            context.read<ClientPageBloc>().add(
-                                  Event(ClientPageEventsType.addImagenStorage,
-                                      data: [
-                                        client?.clientId ??
-                                            FirebaseClientRepo()
-                                                .clientsCollection
-                                                .doc()
-                                                .id,
-                                        nameController.text,
-                                        image
-                                      ]),
-                                );
-                            if (client != null) {
-                              context.read<ClientPageBloc>().add(
-                                    Event(
-                                      ClientPageEventsType.updateClient,
-                                      data: ClientModel(
-                                        clientId: client!.clientId,
-                                        name: nameController.text,
-                                        surname: surnameController.text,
-                                        email: emailController.text,
-                                        phone: phoneController.text,
-                                        image:
-                                            imagePath == '' ? null : imagePath,
-                                      ),
-                                    ),
-                                  );
-                            } else {
-                              context.read<ClientPageBloc>().add(
-                                    Event(
-                                      ClientPageEventsType.addClient,
-                                      data: ClientModel(
-                                        clientId: FirebaseClientRepo()
-                                            .clientsCollection
-                                            .doc()
-                                            .id,
-                                        name: nameController.text,
-                                        surname: surnameController.text,
-                                        email: emailController.text,
-                                        phone: phoneController.text,
-                                        image:
-                                            imagePath == '' ? null : imagePath,
-                                      ),
-                                    ),
-                                  );
-                            }
-                            context.read<ImagePickerCubit>().removeImage();
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                          AppSpaces.spaceH24,
+                          EsteticaTextFormField(
+                            model: EsteticaTextFormFieldModel(
+                              type: EsteticaTextFormFieldType.text,
+                              controller: nameController,
+                              labelText: 'Name',
+                              hintText: 'Enter your name',
+                              errorText: nameErrorVisible ? nameError : null,
+                            ),
+                            onChanged: (String value) {
+                              read.add(
+                                Event(ClientPageErrorsType.nombreNoValido,
+                                    data: value),
+                              );
+                            },
+                          ),
+                          AppSpaces.spaceH24,
+                          EsteticaTextFormField(
+                            model: EsteticaTextFormFieldModel(
+                              type: EsteticaTextFormFieldType.text,
+                              controller: surnameController,
+                              labelText: 'Surname',
+                              hintText: 'Enter your surname',
+                              errorText:
+                                  surnameErrorVisible ? surnameError : null,
+                            ),
+                            onChanged: (String value) {
+                              read.add(
+                                Event(ClientPageErrorsType.apellidoNoValido,
+                                    data: value),
+                              );
+                            },
+                          ),
+                          AppSpaces.spaceH24,
+                          EsteticaTextFormField(
+                            model: EsteticaTextFormFieldModel(
+                              type: EsteticaTextFormFieldType.email,
+                              controller: emailController,
+                              labelText: 'Email',
+                              hintText: 'Enter your email',
+                              errorText: emailErrorVisible ? emailError : null,
+                            ),
+                            onChanged: (String value) {
+                              read.add(
+                                Event(ClientPageErrorsType.correoNoValido,
+                                    data: value),
+                              );
+                            },
+                          ),
+                          AppSpaces.spaceH24,
+                          EsteticaTextFormField(
+                            model: EsteticaTextFormFieldModel(
+                              type: EsteticaTextFormFieldType.phone,
+                              controller: phoneController,
+                              labelText: 'Phone',
+                              hintText: 'Enter your phone',
+                              errorText: phoneErrorVisible ? phoneError : null,
+                            ),
+                            onChanged: (String value) {
+                              read.add(
+                                Event(ClientPageErrorsType.telefonoNoValido,
+                                    data: value),
+                              );
+                            },
+                          ),
+                          AppSpaces.spaceH24,
+                          DropdownButtonFormField<int>(
+                            value: client?.discount ?? 0,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Discount',
+                              hintText: 'Select discount',
+                            ),
+                            items: const [
+                              DropdownMenuItem<int>(
+                                value: 0,
+                                child: Text('No discount'),
+                              ),
+                              DropdownMenuItem<int>(
+                                value: 10,
+                                child: Text('10% discount'),
+                              ),
+                              DropdownMenuItem<int>(
+                                value: 20,
+                                child: Text('20% discount'),
+                              ),
+                              DropdownMenuItem<int>(
+                                value: 30,
+                                child: Text('30% discount'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              client?.discount = value;
+                            },
+                          ),
+                          AppSpaces.spaceH36,
+                          SizedBox(
+                            width: double.infinity,
+                            child: EsteticaButton(
+                              model: EsteticaButtonModel(
+                                  text: 'Save',
+                                  type: EsteticaButtonType.primary,
+                                  isEnable: !nameErrorVisible &&
+                                      !surnameErrorVisible &&
+                                      !emailErrorVisible &&
+                                      !phoneErrorVisible &&
+                                      nameController.text.isNotEmpty,
+                                  isLoading: (state is Loading)),
+                              onTapFunction: () {
+                                context.read<ClientPageBloc>().add(
+                                      Event(
+                                          ClientPageEventsType.addImagenStorage,
+                                          data: [
+                                            client?.clientId ??
+                                                FirebaseClientRepo()
+                                                    .clientsCollection
+                                                    .doc()
+                                                    .id,
+                                            nameController.text,
+                                            image,
+                                            (_imagePath) {
+                                              log('Image path: $_imagePath');
+                                              if (client != null) {
+                                                context
+                                                    .read<ClientPageBloc>()
+                                                    .add(
+                                                      Event(
+                                                        ClientPageEventsType
+                                                            .updateClient,
+                                                        data: ClientModel(
+                                                            clientId: client!
+                                                                .clientId,
+                                                            name: nameController
+                                                                .text,
+                                                            surname:
+                                                                surnameController
+                                                                    .text,
+                                                            email:
+                                                                emailController
+                                                                    .text,
+                                                            phone:
+                                                                phoneController
+                                                                    .text,
+                                                            image: _imagePath ==
+                                                                    ''
+                                                                ? client?.image
+                                                                : _imagePath,
+                                                            discount: client
+                                                                ?.discount),
+                                                      ),
+                                                    );
+                                              } else {
+                                                context
+                                                    .read<ClientPageBloc>()
+                                                    .add(
+                                                      Event(
+                                                        ClientPageEventsType
+                                                            .addClient,
+                                                        data: ClientModel(
+                                                          clientId:
+                                                              FirebaseClientRepo()
+                                                                  .clientsCollection
+                                                                  .doc()
+                                                                  .id,
+                                                          name: nameController
+                                                              .text,
+                                                          surname:
+                                                              surnameController
+                                                                  .text,
+                                                          email: emailController
+                                                              .text,
+                                                          phone: phoneController
+                                                              .text,
+                                                          image:
+                                                              _imagePath == ''
+                                                                  ? null
+                                                                  : _imagePath,
+                                                          discount:
+                                                              client?.discount,
+                                                        ),
+                                                      ),
+                                                    );
+                                              }
+                                              Navigator.of(context).pop();
+                                            }
+                                          ]),
+                                    );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    )
+                  ]),
                 )
-              ]),
-            )
-          ],
-        ),
-      )),
+              ],
+            ),
+          )),
+        );
+      },
     );
   }
 }

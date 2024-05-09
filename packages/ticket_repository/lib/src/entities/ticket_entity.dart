@@ -7,9 +7,9 @@ import 'package:service_repository/service_repository.dart';
 class TicketEntity {
   final String id;
   final ClientEntity client;
-  final Timestamp date;
-  final String total;
-  final String totalDes;
+  final DateTime date;
+  String total;
+  String totalDes;
   final List<LineaTicket> lineas;
 
   TicketEntity({
@@ -48,8 +48,8 @@ class LineaTicket {
   final String id;
   final ProductEntity? product;
   final ServiceEntity? service;
-  final String subtotal;
-  final String quantity;
+  double subtotal;
+  int quantity;
 
   LineaTicket({
     required this.id,
@@ -73,7 +73,7 @@ class LineaTicket {
       id: map['id'],
       product: ProductEntity.fromMap(map['product']),
       service: ServiceEntity.fromMap(map['service']),
-      subtotal: map['subtotal'],
+      subtotal: (map['subtotal'] as num).toDouble(),
       quantity: map['quantity'],
     );
   }

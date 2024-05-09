@@ -102,12 +102,17 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
         case ClientPageEventsType.addImagenStorage:
           emit.call(Loading(event.eventType));
           try {
-            imagePath = _clientRepository.addImagenStorage(
-                event.data[0] as String,
-                event.data[1] as String,
-                event.data[2] as String) as String;
+            String imageData = event.data[2];
+            imagePath = imageData == ''
+                ? ''
+                : await _clientRepository.addImagenStorage(
+                    event.data[0] as String,
+                    event.data[1] as String,
+                    event.data[2] as String);
+            (event.data[3] as Function)(imagePath);
             emit.call(Success(event.eventType));
           } catch (e) {
+            log(e.toString());
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
           break;

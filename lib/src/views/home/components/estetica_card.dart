@@ -1,19 +1,31 @@
+import 'package:estetica_app/src/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:product_repository/product_repository.dart';
 
-// ignore: must_be_immutable
 class EsteticaCard extends StatelessWidget {
-  ProductModel product;
+  final ProductModel product;
 
-  EsteticaCard({super.key, required this.product});
+  const EsteticaCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 200,
+      width: 200,
       child: Stack(
         children: [
-          Image.network(
-            product.image ?? '',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              product.image ?? 'https://via.placeholder.com/150',
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network('https://via.placeholder.com/150');
+              },
+              fit: BoxFit.cover,
+              height: double.maxFinite,
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -30,8 +42,10 @@ class EsteticaCard extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0),
-                    Colors.black.withOpacity(0.8),
+                    AppColors.primaryColorLight.withOpacity(0.1),
+                    AppColors.primaryColorLight.withOpacity(0.8),
+                    AppColors.primaryColorLight,
+                    AppColors.primaryColor,
                   ],
                 ),
               ),
@@ -39,7 +53,7 @@ class EsteticaCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name ?? '',
+                    product.name ?? 'Unnamed Product',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -48,7 +62,7 @@ class EsteticaCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Quantity: ${product.price}',
+                    'Precio: ${product.price.toString()} €',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,

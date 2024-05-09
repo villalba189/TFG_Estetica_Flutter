@@ -20,7 +20,7 @@ class CreateUpdateServicesScreen extends StatelessWidget {
     final TextEditingController descriptionController =
         TextEditingController(text: service?.description ?? '');
     final TextEditingController priceController =
-        TextEditingController(text: service?.price.toString() ?? '');
+        TextEditingController(text: service?.price?.toStringAsFixed(2) ?? '');
 
     return BlocProvider.value(
       value: bloc,
@@ -79,12 +79,15 @@ class FormularioService extends StatelessWidget {
                     ),
                     TextField(
                       controller: priceController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: const InputDecoration(
                         labelText: 'Price',
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        double price = double.parse(priceController.text);
                         if (service != null) {
                           context.read<ServicePageBloc>().add(
                                 Event(
@@ -93,7 +96,7 @@ class FormularioService extends StatelessWidget {
                                     serviceId: service!.serviceId,
                                     name: nameController.text,
                                     description: descriptionController.text,
-                                    price: priceController.text,
+                                    price: price,
                                   ),
                                 ),
                               );
@@ -108,7 +111,7 @@ class FormularioService extends StatelessWidget {
                                         .id,
                                     name: nameController.text,
                                     description: descriptionController.text,
-                                    price: priceController.text,
+                                    price: price,
                                   ),
                                 ),
                               );

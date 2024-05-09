@@ -2,7 +2,7 @@ class ProductEntity {
   final String? productId;
   final String? name;
   final String? description;
-  final String? price;
+  final double? price;
   final String? brand;
   final String? image;
 
@@ -31,7 +31,7 @@ class ProductEntity {
       productId: map['productId'],
       name: map['name'],
       description: map['description'],
-      price: map['price'],
+      price: (map['price'] as num).toDouble(),
       brand: map['brand'],
       image: map['image'],
     );

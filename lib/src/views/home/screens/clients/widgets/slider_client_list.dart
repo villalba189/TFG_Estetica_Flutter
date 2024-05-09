@@ -68,8 +68,12 @@ class SlidableClient extends StatelessWidget {
           ],
         ),
         child: ListTile(
-          title: Text("${client.name} ${client.surname ?? ''}"),
-          subtitle: Text(client.email ?? ''),
+          title: Text(
+            "${client.name} ${client.surname ?? ''}",
+            style: const TextStyle(color: AppColors.colorWhite),
+          ),
+          subtitle: Text(client.email ?? '',
+              style: const TextStyle(color: AppColors.colorWhite)),
           trailing: const Icon(Icons.arrow_forward_ios_rounded),
           leading: Container(
             width: 50,

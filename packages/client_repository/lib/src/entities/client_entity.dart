@@ -4,7 +4,7 @@ class ClientEntity {
   final String? surname;
   final String? email;
   final String? phone;
-  final String? discount;
+  final int? discount;
   final String? image;
 
   ClientEntity({

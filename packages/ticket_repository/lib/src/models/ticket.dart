@@ -1,5 +1,4 @@
 import 'package:client_repository/client_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 import 'package:ticket_repository/src/entities/entities.dart';
@@ -7,9 +6,9 @@ import 'package:ticket_repository/src/entities/entities.dart';
 class TicketModel {
   final String id;
   final ClientModel client;
-  final Timestamp date;
-  final String total;
-  final String totalDes;
+  final DateTime date;
+  String total;
+  String totalDes;
   final List<LineaTicketModel> lineas;
 
   TicketModel({
@@ -47,8 +46,8 @@ class LineaTicketModel {
   final String id;
   final ProductModel? product;
   final ServiceModel? service;
-  final String subtotal;
-  final String quantity;
+  double subtotal;
+  int quantity;
 
   LineaTicketModel({
     required this.id,
@@ -78,6 +77,22 @@ class LineaTicketModel {
           : null,
       subtotal: entity.subtotal,
       quantity: entity.quantity,
+    );
+  }
+
+  LineaTicketModel copyWith({
+    String? id,
+    ProductModel? product,
+    ServiceModel? service,
+    double? subtotal,
+    int? quantity,
+  }) {
+    return LineaTicketModel(
+      id: id ?? this.id,
+      product: product ?? this.product,
+      service: service ?? this.service,
+      subtotal: subtotal ?? this.subtotal,
+      quantity: quantity ?? this.quantity,
     );
   }
 }

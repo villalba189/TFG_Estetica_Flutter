@@ -8,7 +8,7 @@ class AppColors {
   static const colorRed = Color(0xFFDE3636);
   static const colorBotton = Color(0xFF357EEC);
   static const colorWhite = Color(0xFFFFFFFF);
-  static const colorListClient = Color.fromARGB(255, 103, 177, 168);
+  static const colorListClient = Color.fromARGB(255, 29, 145, 131);
   static const colorReadOnly = Color(0xFFE0E0E0);
   static const colorGrey = Color(0xFFE0E0E0);
 }

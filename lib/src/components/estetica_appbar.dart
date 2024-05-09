@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../class/bloc_events_class.dart';
 import '../styles/colors.dart';
 import '../styles/styles.dart';
+import '../views/home/screens/ticket/bloc/ticket_bloc.dart';
 
 SliverAppBar esteticaBar(
     {required String titulo,
@@ -28,23 +31,42 @@ SliverAppBar esteticaBar(
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: () => Navigator.pop(context),
-              child:
-                  Icon(Icons.arrow_back_sharp, color: AppColors.primaryColor),
+              child: const Icon(Icons.arrow_back_sharp,
+                  color: AppColors.primaryColor),
             ),
           )
         ],
         if (ticketActive) ...[
-          Builder(
-            // Usar Builder para obtener el context correcto
-            builder: (newContext) => Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Scaffold.of(newContext).openDrawer(); // Usar newContext aquí
-                },
-                child: Icon(Icons.receipt, color: AppColors.primaryColor),
-              ),
-            ),
+          BlocBuilder<TicketBloc, BlocEvent>(
+            builder: (context, state) {
+              bool tick = context.select((TicketBloc bloc) => bloc.tick);
+              return Builder(
+                builder: (newContext) => Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<TicketBloc>().add(
+                              Event(TicketEventType.editTick, data: false));
+                          Scaffold.of(newContext).openDrawer();
+                        },
+                        child: const Icon(Icons.receipt,
+                            color: AppColors.primaryColor),
+                      ),
+                    ),
+                    if (tick) ...[
+                      const Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Icon(Icons.brightness_1,
+                            size: 10, color: Colors.red),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            },
           ),
         ],
         Expanded(

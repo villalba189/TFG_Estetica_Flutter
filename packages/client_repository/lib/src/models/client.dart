@@ -6,7 +6,7 @@ class ClientModel {
   final String? surname;
   final String? email;
   final String? phone;
-  final String? discount;
+  int? discount;
   final String? image;
 
   ClientModel({

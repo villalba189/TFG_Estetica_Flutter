@@ -20,7 +20,7 @@ class CreateUpdateProductsScreen extends StatelessWidget {
     final TextEditingController descriptionController =
         TextEditingController(text: product?.description ?? '');
     final TextEditingController priceController =
-        TextEditingController(text: product?.price.toString() ?? '');
+        TextEditingController(text: product?.price?.toStringAsFixed(2) ?? '');
 
     return BlocProvider.value(
       value: bloc,
@@ -79,12 +79,15 @@ class FormularioProduct extends StatelessWidget {
                     ),
                     TextField(
                       controller: priceController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: const InputDecoration(
                         labelText: 'Price',
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        double? price = double.tryParse(priceController.text);
                         if (product != null) {
                           context.read<ProductPageBloc>().add(
                                 Event(
@@ -93,7 +96,8 @@ class FormularioProduct extends StatelessWidget {
                                     productId: product!.productId,
                                     name: nameController.text,
                                     description: descriptionController.text,
-                                    price: priceController.text,
+                                    price: price,
+                                    image: 'https://via.placeholder.com/150',
                                   ),
                                 ),
                               );
@@ -108,7 +112,8 @@ class FormularioProduct extends StatelessWidget {
                                         .id,
                                     name: nameController.text,
                                     description: descriptionController.text,
-                                    price: priceController.text,
+                                    price: price,
+                                    image: 'https://via.placeholder.com/150',
                                   ),
                                 ),
                               );
