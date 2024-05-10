@@ -1,5 +1,5 @@
-name: ticket_repository
-description: The Repo that handles tickets
+name: brand_repository
+description: The Repo that handles brands
 publish_to: "none"
 version: 0.0.1
 
@@ -17,15 +17,6 @@ dependencies:
   # rxdart: ^0.27.7
   # path: ^1.8.3
   uuid: ^4.3.3
-
-  client_repository:
-    path: ../client_repository
-  product_repository:
-    path: ../product_repository
-  service_repository:
-    path: ../service_repository
-  brand_repository:
-    path: ../brand_repository
 
 dev_dependencies:
   flutter_test:

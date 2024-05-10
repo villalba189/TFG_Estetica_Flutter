@@ -1,3 +1,4 @@
+import 'package:brand_repository/brand_repository.dart';
 import 'package:estetica_app/src/styles/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
@@ -77,7 +78,8 @@ class FormularioProduct extends StatelessWidget {
 
     String image =
         context.select((ImagePickerCubit cubit) => cubit.imageFile?.path ?? '');
-    List<String> marcas = context.select((ProductPageBloc bloc) => bloc.marcas);
+    List<BrandModel> marcas =
+        context.select((ProductPageBloc bloc) => bloc.marcas);
     BlocEvent state = context.select((ProductPageBloc bloc) => bloc.state);
 
     return Scaffold(
@@ -154,11 +156,10 @@ class FormularioProduct extends StatelessWidget {
                     ),
                     AppSpaces.spaceH24,
                     DropdownButtonFormField(
-                      value: brand,
                       items: marcas.map((e) {
                         return DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
+                          value: e.name,
+                          child: Text(e.name),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -209,6 +210,7 @@ class FormularioProduct extends StatelessWidget {
                                                     image: _imagePath == ''
                                                         ? product?.image
                                                         : _imagePath,
+                                                    brand: brand,
                                                   ),
                                                 ),
                                               );
@@ -232,6 +234,7 @@ class FormularioProduct extends StatelessWidget {
                                                     image: _imagePath == ''
                                                         ? 'https://via.placeholder.com/150'
                                                         : _imagePath,
+                                                    brand: brand,
                                                   ),
                                                 ),
                                               );

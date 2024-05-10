@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:client_repository/client_repository.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
@@ -60,7 +58,7 @@ class LineaTicket {
   });
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'lineaId': id,
       'product': product?.toMap(),
       'service': service?.toMap(),
       'subtotal': subtotal,

@@ -38,6 +38,8 @@ dependencies:
     path: packages/service_repository
   ticket_repository:
     path: packages/ticket_repository
+  brand_repository:
+    path: packages/brand_repository
   # UI
   flutter_slidable: ^3.1.0
 

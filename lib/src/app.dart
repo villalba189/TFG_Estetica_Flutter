@@ -1,3 +1,4 @@
+import 'package:brand_repository/brand_repository.dart';
 import 'package:client_repository/client_repository.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
@@ -39,8 +40,9 @@ class MyApp extends StatelessWidget {
               ..add(Event(ClientPageEventsType.getClients)),
           ),
           BlocProvider<ProductPageBloc>(
-            create: (context) => ProductPageBloc(FirebaseProductRepo())
-              ..add(Event(ProductPageEventsType.getProducts)),
+            create: (context) =>
+                ProductPageBloc(FirebaseProductRepo(), FirebaseBrandRepo())
+                  ..add(Event(ProductPageEventsType.getProducts)),
           ),
           BlocProvider<ServicePageBloc>(
             create: (context) => ServicePageBloc(FirebaseServiceRepo())
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
             create: (context) => ImagePickerCubit(),
           ),
           BlocProvider(
-              create: (context) => TicketBloc(FirebaseTicketRepo())
+              create: (context) => TicketBloc(FirebaseTicketRepo(), context)
                 ..add(Event(TicketEventType.initial))),
         ],
         child: MyHomePage(),

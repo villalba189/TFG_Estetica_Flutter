@@ -49,7 +49,7 @@ SliverAppBar esteticaBar(
                         onTap: () {
                           context.read<TicketBloc>().add(
                               Event(TicketEventType.editTick, data: false));
-                          Scaffold.of(newContext).openDrawer();
+                          Scaffold.of(context).openDrawer();
                         },
                         child: const Icon(Icons.receipt,
                             color: AppColors.primaryColor),

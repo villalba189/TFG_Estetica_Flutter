@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
+import 'package:brand_repository/brand_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
 
@@ -22,8 +23,9 @@ enum ProductPageErrorsType {
 
 class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ProductRepo _productRepository;
+  final BrandRepo _brandRepository;
   List<ProductModel> products = [];
-  List<String> marcas = [];
+  List<BrandModel> marcas = [];
 
   String nameError = '';
   String priceError = '';
@@ -34,7 +36,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
   bool descriptionErrorVisible = false;
 
   String imagePath = '';
-  ProductPageBloc(this._productRepository)
+  ProductPageBloc(this._productRepository, this._brandRepository)
       : super(Event(ProductPageEventsType.getProducts)) {
     on<Event>((event, emit) async {
       switch (event.eventType) {
@@ -42,6 +44,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             products = await _productRepository.getProducts();
+            marcas = await _brandRepository.getBrands();
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

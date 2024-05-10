@@ -2,6 +2,11 @@ import 'dart:developer';
 
 import 'package:client_repository/client_repository.dart';
 import 'package:estetica_app/src/class/bloc_events_class.dart';
+import 'package:estetica_app/src/styles/colors.dart';
+import 'package:estetica_app/src/styles/spaces.dart';
+import 'package:estetica_app/src/views/home/screens/ticket/widgets/paymant_dialog.dart';
+import 'package:estetica_app/src/widgets/estetica_button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
@@ -14,10 +19,13 @@ enum TicketEventType {
   addClient,
   finalizeTicket,
   editTick,
+  sendTicket,
+  cashPayment,
 }
 
 class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
   final TicketRepo ticketRepository;
+  final BuildContext context;
   List<LineaTicketModel> ticketLineas = [];
   ClientModel client = ClientModel();
 
@@ -27,10 +35,16 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
 
   bool tick = false;
 
+  bool isPaid = false;
+
+  String toPay = '0';
+
   TicketBloc(
     this.ticketRepository,
+    this.context,
   ) : super(Event(TicketEventType.initial)) {
     on<Event>((event, emit) {
+      log('Event: ${event.eventType}');
       void recalculateTotals() {
         total =
             ticketLineas.fold(0, (prev, element) => prev + (element.subtotal));
@@ -73,6 +87,10 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
         case TicketEventType.initial:
           log('initial');
           emit(Loading(event.eventType));
+          ticketLineas.clear(); // Limpiar contenido del ticket al iniciar
+          client = ClientModel(); // Limpiar cliente al iniciar
+          total = 0; // Reiniciar total al iniciar
+          totalDiscount = 0; // Reiniciar total con descuento al iniciar
           try {
             emit(Success(event.eventType, data: ticketLineas));
           } catch (e) {
@@ -189,21 +207,65 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Success(event.eventType, data: client));
           break;
         case TicketEventType.finalizeTicket:
+          log('finalizeTicket loaded');
           emit.call(Loading(event.eventType));
           try {
-            ticketRepository.addTicket(
-              TicketModel(
+            // ticketRepository.addTicket(
+            //   TicketModel(
+            //     client: client,
+            //     lineas: ticketLineas,
+            //     total: total.toString(),
+            //     totalDes: totalDiscount.toString(),
+            //     date: DateTime.now(),
+            //     id: FirebaseTicketRepo().ticketsCollection.doc().id,
+            //   ),
+            // );
+            // add(Event(TicketEventType.initial));
+            // Navigator.pop(context);
+            context.showMetodoPagoDialog(
+              ticket: TicketModel(
                 client: client,
                 lineas: ticketLineas,
-                total: total as String,
-                totalDes: totalDiscount as String,
+                total: total.toString(),
+                totalDes: totalDiscount.toString(),
                 date: DateTime.now(),
                 id: FirebaseTicketRepo().ticketsCollection.doc().id,
               ),
             );
             emit.call(Success(event.eventType));
           } catch (e) {
+            log('finalizeTicket error: $e');
             emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+        case TicketEventType.cashPayment:
+          emit(Loading(event.eventType));
+          try {
+            toPay = (totalDiscount - double.parse(event.data)).toString();
+            isPaid = double.parse(toPay) >= totalDiscount;
+            emit(Success(event.eventType, data: isPaid));
+          } catch (e) {
+            emit(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+        case TicketEventType.sendTicket:
+          emit(Loading(event.eventType));
+          try {
+            ticketRepository.addTicket(
+              TicketModel(
+                client: client,
+                lineas: ticketLineas,
+                total: total.toString(),
+                totalDes: totalDiscount.toString(),
+                date: DateTime.now(),
+                id: FirebaseTicketRepo().ticketsCollection.doc().id,
+              ),
+            );
+            add(Event(TicketEventType.initial));
+            Navigator.pop(context);
+            emit(Success(event.eventType));
+          } catch (e) {
+            emit(Failure(event.eventType, errorType: e.toString()));
           }
           break;
       }

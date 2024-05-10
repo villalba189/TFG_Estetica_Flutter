@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:client_repository/client_repository.dart';
 import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket_list.dart';
@@ -20,6 +22,7 @@ class TicketScreen extends StatelessWidget {
     double total = context.select((TicketBloc bloc) => bloc.total);
     double totalDiscount =
         context.select((TicketBloc bloc) => bloc.totalDiscount);
+    BlocEvent stateTicket = context.select((TicketBloc bloc) => bloc.state);
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,14 +92,17 @@ class TicketScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: EsteticaButton(
-                    model: EsteticaButtonModel(
-                      text: 'Finalizar Ticket',
-                      type: EsteticaButtonType.secondary,
-                    ),
-                    onTapFunction: () => context
-                        .read<TicketBloc>()
-                        .add(Event(TicketEventType.finalizeTicket)),
-                  ),
+                      model: EsteticaButtonModel(
+                        text: 'Finalizar Ticket',
+                        type: EsteticaButtonType.secondary,
+                        isLoading: stateTicket is Loading,
+                        isEnable: ticketLines.isNotEmpty,
+                      ),
+                      onTapFunction: () {
+                        context
+                            .read<TicketBloc>()
+                            .add(Event(TicketEventType.finalizeTicket));
+                      }),
                 ),
               ],
             ),
