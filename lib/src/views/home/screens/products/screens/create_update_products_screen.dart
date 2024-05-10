@@ -1,20 +1,28 @@
-import 'package:product_repository/product_repository.dart';
+import 'package:estetica_app/src/styles/spaces.dart';
+import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
+import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_repository/product_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
 import '../../../../../components/estetica_appbar.dart';
+import '../../../../../widgets/estetica_text_form_field.dart';
+import '../../../components/image_picker_widget.dart';
 import '../bloc/product_page_bloc.dart';
 
 class CreateUpdateProductsScreen extends StatelessWidget {
   final ProductModel? product;
   final ProductPageBloc bloc;
+  final ImagePickerCubit cubit;
 
-  const CreateUpdateProductsScreen({Key? key, this.product, required this.bloc})
+  const CreateUpdateProductsScreen(
+      {Key? key, this.product, required this.bloc, required this.cubit})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    cubit.removeImage();
     final TextEditingController nameController =
         TextEditingController(text: product?.name ?? '');
     final TextEditingController descriptionController =
@@ -22,13 +30,17 @@ class CreateUpdateProductsScreen extends StatelessWidget {
     final TextEditingController priceController =
         TextEditingController(text: product?.price?.toStringAsFixed(2) ?? '');
 
-    return BlocProvider.value(
-      value: bloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProductPageBloc>.value(value: bloc),
+        BlocProvider<ImagePickerCubit>.value(value: cubit),
+      ],
       child: FormularioProduct(
-          nameController: nameController,
-          descriptionController: descriptionController,
-          priceController: priceController,
-          product: product),
+        nameController: nameController,
+        descriptionController: descriptionController,
+        priceController: priceController,
+        product: product,
+      ),
     );
   }
 }
@@ -49,6 +61,25 @@ class FormularioProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String brand = product?.brand ?? '';
+    final ProductPageBloc read = context.read<ProductPageBloc>();
+    bool nameErrorVisible =
+        context.select((ProductPageBloc bloc) => bloc.nameErrorVisible);
+    bool descriptionErrorVisible =
+        context.select((ProductPageBloc bloc) => bloc.descriptionErrorVisible);
+    bool priceErrorVisible =
+        context.select((ProductPageBloc bloc) => bloc.priceErrorVisible);
+    String nameError = context.select((ProductPageBloc bloc) => bloc.nameError);
+    String descriptionError =
+        context.select((ProductPageBloc bloc) => bloc.descriptionError);
+    String priceError =
+        context.select((ProductPageBloc bloc) => bloc.priceError);
+
+    String image =
+        context.select((ImagePickerCubit cubit) => cubit.imageFile?.path ?? '');
+    List<String> marcas = context.select((ProductPageBloc bloc) => bloc.marcas);
+    BlocEvent state = context.select((ProductPageBloc bloc) => bloc.state);
+
     return Scaffold(
         body: SafeArea(
       child: CustomScrollView(
@@ -62,67 +93,156 @@ class FormularioProduct extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate([
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(14.0),
                 child: Column(
                   children: [
-                    TextField(
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                      ),
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                      ),
-                    ),
-                    TextField(
-                      controller: priceController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: 'Price',
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        double? price = double.tryParse(priceController.text);
-                        if (product != null) {
-                          context.read<ProductPageBloc>().add(
-                                Event(
-                                  ProductPageEventsType.updateProduct,
-                                  data: ProductModel(
-                                    productId: product!.productId,
-                                    name: nameController.text,
-                                    description: descriptionController.text,
-                                    price: price,
-                                    image: 'https://via.placeholder.com/150',
-                                  ),
-                                ),
-                              );
-                        } else {
-                          context.read<ProductPageBloc>().add(
-                                Event(
-                                  ProductPageEventsType.addProduct,
-                                  data: ProductModel(
-                                    productId: FirebaseProductRepo()
-                                        .productsCollection
-                                        .doc()
-                                        .id,
-                                    name: nameController.text,
-                                    description: descriptionController.text,
-                                    price: price,
-                                    image: 'https://via.placeholder.com/150',
-                                  ),
-                                ),
-                              );
-                        }
-                        Navigator.of(context).pop();
+                    AppSpaces.spaceH24,
+                    ImagePickerWidget(
+                      onImageSelected: (_image) {
+                        context.read<ImagePickerCubit>().setImageFile(_image);
                       },
-                      child: Text(
-                          product != null ? 'Update Product' : 'Add Product'),
+                      imagePath: (image == '' ? product?.image : image) ?? '',
                     ),
+                    AppSpaces.spaceH24,
+                    EsteticaTextFormField(
+                      model: EsteticaTextFormFieldModel(
+                        type: EsteticaTextFormFieldType.text,
+                        controller: nameController,
+                        labelText: 'Name',
+                        hintText: 'Enter your name',
+                        errorText: nameErrorVisible ? nameError : null,
+                      ),
+                      onChanged: (String value) {
+                        read.add(Event(
+                          ProductPageErrorsType.productNameNoValido,
+                          data: value,
+                        ));
+                      },
+                    ),
+                    AppSpaces.spaceH24,
+                    EsteticaTextFormField(
+                      model: EsteticaTextFormFieldModel(
+                        type: EsteticaTextFormFieldType.text,
+                        controller: descriptionController,
+                        labelText: 'Description',
+                        hintText: 'Enter your description',
+                        errorText:
+                            descriptionErrorVisible ? descriptionError : null,
+                      ),
+                      onChanged: (String value) {
+                        read.add(Event(
+                          ProductPageErrorsType.productDescriptionNoValido,
+                          data: value,
+                        ));
+                      },
+                    ),
+                    AppSpaces.spaceH24,
+                    EsteticaTextFormField(
+                      model: EsteticaTextFormFieldModel(
+                        type: EsteticaTextFormFieldType.number,
+                        controller: priceController,
+                        labelText: 'Price',
+                        hintText: 'Enter your price',
+                        errorText: priceErrorVisible ? priceError : null,
+                      ),
+                      onChanged: (String value) {
+                        read.add(Event(
+                          ProductPageErrorsType.productPriceNoValido,
+                          data: value,
+                        ));
+                      },
+                    ),
+                    AppSpaces.spaceH24,
+                    DropdownButtonFormField(
+                      value: brand,
+                      items: marcas.map((e) {
+                        return DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        brand = value!;
+                      },
+                    ),
+                    AppSpaces.spaceH24,
+                    SizedBox(
+                      width: double.infinity,
+                      child: EsteticaButton(
+                        model: EsteticaButtonModel(
+                            text: product != null
+                                ? 'Update Product'
+                                : 'Add Product',
+                            type: EsteticaButtonType.primary,
+                            isEnable: nameController.text.isNotEmpty &&
+                                priceController.text.isNotEmpty &&
+                                !nameErrorVisible &&
+                                !descriptionErrorVisible &&
+                                !priceErrorVisible,
+                            isLoading: state is Loading),
+                        onTapFunction: () {
+                          context.read<ProductPageBloc>().add(
+                                Event(ProductPageEventsType.addImagenStorage,
+                                    data: [
+                                      product?.productId ??
+                                          FirebaseProductRepo()
+                                              .productsCollection
+                                              .doc()
+                                              .id,
+                                      nameController.text,
+                                      image,
+                                      (_imagePath) {
+                                        if (product != null) {
+                                          context.read<ProductPageBloc>().add(
+                                                Event(
+                                                  ProductPageEventsType
+                                                      .updateProduct,
+                                                  data: ProductModel(
+                                                    productId:
+                                                        product!.productId,
+                                                    name: nameController.text,
+                                                    description:
+                                                        descriptionController
+                                                            .text,
+                                                    price: double.tryParse(
+                                                        priceController.text),
+                                                    image: _imagePath == ''
+                                                        ? product?.image
+                                                        : _imagePath,
+                                                  ),
+                                                ),
+                                              );
+                                        } else {
+                                          context.read<ProductPageBloc>().add(
+                                                Event(
+                                                  ProductPageEventsType
+                                                      .addProduct,
+                                                  data: ProductModel(
+                                                    productId:
+                                                        FirebaseProductRepo()
+                                                            .productsCollection
+                                                            .doc()
+                                                            .id,
+                                                    name: nameController.text,
+                                                    description:
+                                                        descriptionController
+                                                            .text,
+                                                    price: double.tryParse(
+                                                        priceController.text),
+                                                    image: _imagePath == ''
+                                                        ? 'https://via.placeholder.com/150'
+                                                        : _imagePath,
+                                                  ),
+                                                ),
+                                              );
+                                        }
+                                        Navigator.of(context).pop();
+                                      }
+                                    ]),
+                              );
+                        },
+                      ),
+                    )
                   ],
                 ),
               )

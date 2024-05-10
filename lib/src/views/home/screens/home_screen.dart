@@ -47,6 +47,7 @@ class MyHomePage extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (_context) => CreateUpdateProductsScreen(
                       bloc: context.read<ProductPageBloc>(),
+                      cubit: context.read<ImagePickerCubit>(),
                     ),
                   ));
                   break;
@@ -54,6 +55,7 @@ class MyHomePage extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (_context) => CreateUpdateServicesScreen(
                       bloc: context.read<ServicePageBloc>(),
+                      cubit: context.read<ImagePickerCubit>(),
                     ),
                   ));
                   break;

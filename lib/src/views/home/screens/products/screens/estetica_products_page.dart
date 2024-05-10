@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
+import '../../../blocs/image_picker_cubit.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -16,43 +17,50 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ProductModel> products =
         context.select((ProductPageBloc value) => value.products);
-    return BlocBuilder<ProductPageBloc, BlocEvent>(
+    BlocEvent stateProduct =
+        context.select((ProductPageBloc value) => value.state);
+    return BlocConsumer<TicketBloc, BlocEvent>(
+      listener: (context, state) {
+        if (state.eventType == TicketEventType.addTicketLine) {
+          if (state.runtimeType == Success) {
+            context.showSnackBar(
+                message:
+                    'Producto añadido al ticket ${(state.data as ProductModel).name}');
+          }
+        }
+      },
       builder: (context, state) {
-        if (state is Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is Failure) {
-          return Center(
-            child: Text(state.errorType),
-          );
-        } else {
-          return Center(
-            child: Wrap(
-              spacing: 15,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: products
-                  .map(
-                    (product) => GestureDetector(
-                        onTap: () {
-                          context.showSnackBar(
-                              message:
-                                  'Producto añadido al ticket ${product.name}');
-
-                          context.read<TicketBloc>().add(Event(
-                              TicketEventType.addTicketLine,
-                              data: {'type': 'product', 'product': product}));
-                        },
-                        onLongPress: () {
-                          context.showCustomBottomSheet(
-                              product: product,
-                              productPageBloc: context.read<ProductPageBloc>());
-                        },
-                        child: EsteticaCard(product: product)),
-                  )
-                  .toList(),
-            ),
-          );
+        switch (stateProduct.runtimeType) {
+          case Loading:
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          case Failure:
+            return const Center(
+              child: Text('Error al cargar los productos'),
+            );
+          case Success:
+            return Center(
+              child: Wrap(
+                spacing: 15,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: products
+                    .map(
+                      (product) => GestureDetector(
+                          onTap: () {
+                            context.read<TicketBloc>().add(Event(
+                                TicketEventType.addTicketLine,
+                                data: {'type': 'product', 'product': product}));
+                          },
+                          child: EsteticaCard(product: product)),
+                    )
+                    .toList(),
+              ),
+            );
+          default:
+            return const Center(
+              child: Text('Error al cargar los productos'),
+            );
         }
       },
     );

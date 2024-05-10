@@ -6,4 +6,5 @@ abstract class ServiceRepo {
   Future<void> addService(ServiceModel service);
   Future<void> updateService(ServiceModel service);
   Future<void> deleteService(String id);
+  Future<String> addImagenStorage(String id, String name, String imagePath);
 }

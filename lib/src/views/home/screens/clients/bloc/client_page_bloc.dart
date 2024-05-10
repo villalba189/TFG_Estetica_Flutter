@@ -119,7 +119,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
       }
       switch (event.eventType) {
         case ClientPageErrorsType.nombreNoValido:
-          // Validación directa del nombre
           String name = event.data as String;
           final nameRegex = RegExp(
               r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$'); // Aceptar solo letras, espacios y guiones, mínimo 2 caracteres
@@ -143,7 +142,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
 
         case ClientPageErrorsType.apellidoNoValido:
-          // Validación directa del apellido
           String surname = event.data as String;
           final surnameRegex = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$');
           bool isValidSurname = surnameRegex.hasMatch(surname);
@@ -164,7 +162,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           }
           break;
         case ClientPageErrorsType.correoNoValido:
-          // Validación directa del correo electrónico
           String email = event.data as String;
           final emailRegex = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
           bool isValidEmail = emailRegex.hasMatch(email);
@@ -186,7 +183,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
 
         case ClientPageErrorsType.telefonoNoValido:
-          // Validación directa del teléfono
           String phone = event.data as String;
           final phoneRegex = RegExp(
               r'^[6-9]\d{8}$'); // Número de teléfono español de 9 dígitos

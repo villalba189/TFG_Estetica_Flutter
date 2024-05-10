@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 
+import '../views/home/blocs/image_picker_cubit.dart';
 import '../views/home/screens/products/bloc/product_page_bloc.dart';
 import '../views/home/screens/products/screens/create_update_products_screen.dart';
 import '../views/home/screens/services/bloc/service_page_bloc.dart';
@@ -13,6 +14,7 @@ extension ShowCustomBottomSheet on BuildContext {
     ProductModel? product,
     ServiceModel? service,
     ProductPageBloc? productPageBloc,
+    ImagePickerCubit? imagePickerCubit,
     ServicePageBloc? servicePageBloc,
   }) {
     showModalBottomSheet(
@@ -20,6 +22,7 @@ extension ShowCustomBottomSheet on BuildContext {
       builder: (context) => CustomBottomSheet(
         product: product,
         service: service,
+        imagePickerCubit: imagePickerCubit,
         productPageBloc: productPageBloc,
         servicePageBloc: servicePageBloc,
       ),
@@ -30,6 +33,7 @@ extension ShowCustomBottomSheet on BuildContext {
 class CustomBottomSheet extends StatelessWidget {
   final ProductModel? product;
   final ServiceModel? service;
+  final ImagePickerCubit? imagePickerCubit;
   final ProductPageBloc? productPageBloc;
   final ServicePageBloc? servicePageBloc;
 
@@ -37,6 +41,7 @@ class CustomBottomSheet extends StatelessWidget {
       {super.key,
       this.product,
       this.service,
+      this.imagePickerCubit,
       this.productPageBloc,
       this.servicePageBloc});
   @override
@@ -76,17 +81,23 @@ class CustomBottomSheet extends StatelessWidget {
           ),
           onTap: () {
             if (product != null) {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_context) => CreateUpdateProductsScreen(
-                      product: product, bloc: productPageBloc!),
+                    product: product,
+                    bloc: productPageBloc!,
+                    cubit: imagePickerCubit!,
+                  ),
                 ),
               );
             } else {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_context) => CreateUpdateServicesScreen(
-                      service: service, bloc: servicePageBloc!),
+                    service: service,
+                    bloc: servicePageBloc!,
+                    cubit: imagePickerCubit!,
+                  ),
                 ),
               );
             }
