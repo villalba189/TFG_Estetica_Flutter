@@ -1,4 +1,5 @@
 import 'package:brand_repository/brand_repository.dart';
+import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/styles/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
@@ -155,7 +156,12 @@ class FormularioProduct extends StatelessWidget {
                       },
                     ),
                     AppSpaces.spaceH24,
-                    DropdownButtonFormField(
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(),
+                      ),
                       items: marcas.map((e) {
                         return DropdownMenuItem(
                           value: e.name,
@@ -165,6 +171,12 @@ class FormularioProduct extends StatelessWidget {
                       onChanged: (value) {
                         brand = value!;
                       },
+                      icon: const Icon(
+                          Icons.arrow_drop_down), // Icono desplegable
+                      iconEnabledColor:
+                          Colors.black, // Color del icono del desplegable
+                      dropdownColor:
+                          Colors.white, // Color de fondo del menú desplegable
                     ),
                     AppSpaces.spaceH24,
                     SizedBox(
@@ -232,7 +244,7 @@ class FormularioProduct extends StatelessWidget {
                                                     price: double.tryParse(
                                                         priceController.text),
                                                     image: _imagePath == ''
-                                                        ? 'https://via.placeholder.com/150'
+                                                        ? 'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7'
                                                         : _imagePath,
                                                     brand: brand,
                                                   ),

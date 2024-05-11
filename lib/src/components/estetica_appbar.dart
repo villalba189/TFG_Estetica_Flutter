@@ -48,7 +48,7 @@ SliverAppBar esteticaBar(
                       child: GestureDetector(
                         onTap: () {
                           context.read<TicketBloc>().add(
-                              Event(TicketEventType.editTick, data: false));
+                              Event(TicketEventType.editTicket, data: false));
                           Scaffold.of(context).openDrawer();
                         },
                         child: const Icon(Icons.receipt,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:client_repository/client_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +23,8 @@ class ClientPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        List<ClientModel> clients =
-            context.select((ClientPageBloc bloc) => bloc.clients);
+        List<ClientModel> clientsFiltered =
+            context.select((ClientPageBloc bloc) => bloc.clientsFiltered);
         BlocEvent stateClient =
             context.select((ClientPageBloc bloc) => bloc.state);
 
@@ -34,7 +32,7 @@ class ClientPage extends StatelessWidget {
           case Success:
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: clients
+              children: clientsFiltered
                   .map(
                     (client) => GestureDetector(
                       onTap: () {

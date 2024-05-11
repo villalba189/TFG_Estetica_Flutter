@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:client_repository/client_repository.dart';
+import 'package:estetica_app/src/styles/colors.dart';
 import 'package:estetica_app/src/styles/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
 import 'package:estetica_app/src/widgets/estetica_text_form_field.dart';
@@ -193,21 +194,26 @@ class FormularioClient extends StatelessWidget {
                             child: Text('No discount'),
                           ),
                           DropdownMenuItem<int>(
+                            value: 5,
+                            child: Text('5% discount'),
+                          ),
+                          DropdownMenuItem<int>(
                             value: 10,
                             child: Text('10% discount'),
+                          ),
+                          DropdownMenuItem<int>(
+                            value: 15,
+                            child: Text('15% discount'),
                           ),
                           DropdownMenuItem<int>(
                             value: 20,
                             child: Text('20% discount'),
                           ),
-                          DropdownMenuItem<int>(
-                            value: 30,
-                            child: Text('30% discount'),
-                          ),
                         ],
                         onChanged: (value) {
                           discount = value!;
                         },
+                        dropdownColor: AppColors.colorWhite,
                       ),
                       AppSpaces.spaceH36,
                       SizedBox(

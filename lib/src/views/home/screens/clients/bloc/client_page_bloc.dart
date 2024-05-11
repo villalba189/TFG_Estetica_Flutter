@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:client_repository/client_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
@@ -12,6 +10,7 @@ enum ClientPageEventsType {
   getClientById,
   getClients,
   addImagenStorage,
+  filterByName,
 }
 
 enum ClientPageErrorsType {
@@ -24,6 +23,7 @@ enum ClientPageErrorsType {
 class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ClientRepo _clientRepository;
   List<ClientModel> clients = [];
+  List<ClientModel> clientsFiltered = [];
 
   // The error message
   String nameError = '';
@@ -48,12 +48,31 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             clients = await _clientRepository.getClients();
+            clientsFiltered = clients;
 
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
           break;
+
+        case ClientPageEventsType.filterByName:
+          emit.call(Loading(event.eventType));
+          if (event.data == '') {
+            clientsFiltered = clients;
+          }
+          try {
+            clientsFiltered = clients
+                .where((element) => element.name!
+                    .toLowerCase()
+                    .contains((event.data as String).toLowerCase()))
+                .toList();
+            emit.call(Success(event.eventType));
+          } catch (e) {
+            emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+
         case ClientPageEventsType.getClientById:
           emit.call(Loading(event.eventType));
           try {
@@ -77,9 +96,11 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
         case ClientPageEventsType.deleteClient:
           emit.call(Loading(event.eventType));
+          ClientModel client = event.data as ClientModel;
           try {
-            _clientRepository.deleteClient(event.data as String);
-            clients.removeWhere((client) => client.clientId == event.data);
+            _clientRepository.deleteClient(client.clientId!);
+            _clientRepository.deleteImagenStorage(client);
+            clients.removeWhere((client) => client.clientId == client.clientId);
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -112,7 +133,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
             (event.data[3] as Function)(imagePath);
             emit.call(Success(event.eventType));
           } catch (e) {
-            log(e.toString());
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
           break;
@@ -123,7 +143,6 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           final nameRegex = RegExp(
               r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$'); // Aceptar solo letras, espacios y guiones, mínimo 2 caracteres
           bool isValidName = nameRegex.hasMatch(name);
-          log(name);
           if (name.isEmpty) {
             emit.call(Failure(event.eventType));
             nameError = 'Name is required';

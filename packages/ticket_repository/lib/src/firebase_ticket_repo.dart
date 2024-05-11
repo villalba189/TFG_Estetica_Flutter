@@ -55,4 +55,13 @@ class FirebaseTicketRepo implements TicketRepo {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<void> deleteTicket(TicketModel ticket) async {
+    try {
+      return await ticketsCollection.doc(ticket.id).delete();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

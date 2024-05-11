@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:brand_repository/brand_repository.dart';
@@ -13,6 +11,8 @@ enum ProductPageEventsType {
   deleteProduct,
   updateProduct,
   addImagenStorage,
+  filterByBrand,
+  filterByName,
 }
 
 enum ProductPageErrorsType {
@@ -24,8 +24,11 @@ enum ProductPageErrorsType {
 class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ProductRepo _productRepository;
   final BrandRepo _brandRepository;
+  List<ProductModel> productsBack = [];
   List<ProductModel> products = [];
+  List<ProductModel> productsFiltered = [];
   List<BrandModel> marcas = [];
+  String marcaActual = 'Todas';
 
   String nameError = '';
   String priceError = '';
@@ -40,24 +43,52 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
       : super(Event(ProductPageEventsType.getProducts)) {
     on<Event>((event, emit) async {
       switch (event.eventType) {
-        case ProductPageEventsType.getProducts:
+        case ProductPageEventsType.filterByName:
+          marcaActual = 'Todas';
           emit.call(Loading(event.eventType));
+          if (event.data == '') {
+            productsFiltered = products;
+          }
           try {
-            products = await _productRepository.getProducts();
-            marcas = await _brandRepository.getBrands();
+            productsFiltered = products
+                .where((element) => element.name!
+                    .toLowerCase()
+                    .contains((event.data as String).toLowerCase()))
+                .toList();
+
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
           break;
-        case ProductPageEventsType.getProductById:
+        case ProductPageEventsType.filterByBrand:
           emit.call(Loading(event.eventType));
+          if (event.data == 'Todas') {
+            productsFiltered = products;
+            marcaActual = 'Todas';
+            emit.call(Success(event.eventType));
+            return;
+          }
           try {
-            _productRepository
-                .getProductbyId(event.data as String)
-                .then((value) {
-              emit(Event(ProductPageEventsType.getProductById, data: value));
-            });
+            productsFiltered = products
+                .where((element) => element.brand == event.data)
+                .toList();
+            marcaActual = event.data as String;
+            emit.call(Success(event.eventType));
+          } catch (e) {
+            emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+        case ProductPageEventsType.getProducts:
+          emit.call(Loading(event.eventType));
+
+          marcaActual = 'Todas';
+          try {
+            productsBack = await _productRepository.getProducts();
+            marcas = await _brandRepository.getBrands();
+            marcas.insert(0, BrandModel(id: 'Todas', name: 'Todas'));
+            products = productsBack;
+            productsFiltered = products;
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -76,9 +107,13 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
         case ProductPageEventsType.deleteProduct:
           emit.call(Loading(event.eventType));
+          ProductModel product = event.data as ProductModel;
           try {
-            _productRepository.deleteProduct(event.data as String);
-            products.removeWhere((element) => element.productId == event.data);
+            _productRepository.deleteProduct(product.productId!);
+            _productRepository.deleteImagenStorage(product);
+            products.removeWhere(
+                (element) => element.productId == product.productId);
+
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -118,7 +153,6 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           final nameRegex = RegExp(
               r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]{2,}$'); // Aceptar solo letras, espacios y guiones, mínimo 2 caracteres
           bool isValidName = nameRegex.hasMatch(name);
-          log(name);
           if (name.isEmpty) {
             emit.call(Failure(event.eventType));
             nameError = 'Name is required';

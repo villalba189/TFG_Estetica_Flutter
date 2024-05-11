@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:client_repository/client_repository.dart';
 import 'package:estetica_app/src/styles/colors.dart';
+import 'package:estetica_app/src/views/home/blocs/home_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket_list.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
@@ -31,18 +32,26 @@ class TicketScreen extends StatelessWidget {
             decoration: const BoxDecoration(color: AppColors.primaryColor),
             accountName: Text(client.name ?? 'Invitado'),
             accountEmail: Text(client.email ?? 'Sin correo'),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: AppColors.primaryColorLight,
-              backgroundImage: client.image != null
-                  ? NetworkImage(client.image as String)
-                  : null,
-              child: client.image == null
-                  ? const Icon(
-                      Icons.person,
-                      size: 30,
-                      color: AppColors.colorWhite,
-                    )
-                  : null,
+            currentAccountPicture: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                context
+                    .read<HomeBloc>()
+                    .add(Event(HomeEventsType.selectedIndex, data: 2));
+              },
+              child: CircleAvatar(
+                backgroundColor: AppColors.primaryColorLight,
+                backgroundImage: client.image != null
+                    ? NetworkImage(client.image as String)
+                    : null,
+                child: client.image == null
+                    ? const Icon(
+                        Icons.person,
+                        size: 30,
+                        color: AppColors.colorWhite,
+                      )
+                    : null,
+              ),
             ),
           ),
           Expanded(

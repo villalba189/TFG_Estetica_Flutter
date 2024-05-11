@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:estetica_app/src/class/bloc_events_class.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_repository/service_repository.dart';
@@ -9,6 +11,7 @@ enum ServicePageEventsType {
   updateService,
   deleteService,
   addImagenStorage,
+  filterByName,
 }
 
 enum ServicePageErrorsType {
@@ -20,6 +23,7 @@ enum ServicePageErrorsType {
 class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
   final ServiceRepo _serviceRepository;
   List<ServiceModel> services = [];
+  List<ServiceModel> servicesFiltered = [];
 
   String nameError = '';
   String priceError = '';
@@ -39,6 +43,24 @@ class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           try {
             services = await _serviceRepository.getServices();
+            servicesFiltered = services;
+            emit.call(Success(event.eventType));
+          } catch (e) {
+            emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+
+        case ServicePageEventsType.filterByName:
+          emit.call(Loading(event.eventType));
+          if (event.data == '') {
+            servicesFiltered = services;
+          }
+          try {
+            servicesFiltered = services
+                .where((element) => element.name!
+                    .toLowerCase()
+                    .contains((event.data as String).toLowerCase()))
+                .toList();
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));
@@ -80,9 +102,12 @@ class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
         case ServicePageEventsType.deleteService:
           emit.call(Loading(event.eventType));
+          ServiceModel service = event.data as ServiceModel;
           try {
-            _serviceRepository.deleteService(event.data as String);
-            services.removeWhere((element) => element.serviceId == event.data);
+            _serviceRepository.deleteService(service.serviceId!);
+            _serviceRepository.deleteImagenStorage(service);
+            services.removeWhere(
+                (element) => element.serviceId == service.serviceId);
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

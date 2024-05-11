@@ -86,4 +86,15 @@ class FirebaseClientRepo extends ClientRepo {
       rethrow; // Esto permitirá que se maneje más arriba en la cadena.
     }
   }
+
+  @override
+  Future<void> deleteImagenStorage(ClientModel client) async {
+    try {
+      final ref =
+          this.ref.child('clients').child(client.name!).child(client.clientId!);
+      await ref.delete();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

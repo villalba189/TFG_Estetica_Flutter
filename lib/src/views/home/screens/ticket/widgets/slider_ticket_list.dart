@@ -9,6 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
+import '../../../blocs/home_bloc.dart';
 import '../bloc/ticket_bloc.dart';
 
 class SlidableTicketLine extends StatelessWidget {
@@ -64,7 +65,9 @@ class SlidableTicketLine extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          log("Tapped: ${line.product?.name ?? line.service?.name}");
+          Navigator.pop(context);
+          context.read<HomeBloc>().add(Event(HomeEventsType.selectedIndex,
+              data: line.product != null ? 0 : 1));
         },
         child: Container(
           decoration: BoxDecoration(

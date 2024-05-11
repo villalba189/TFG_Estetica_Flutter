@@ -13,10 +13,8 @@ class EsteticaBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final int index = context.select((HomeBloc bloc) => bloc.state.data ?? 0);
     return Container(
-      margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.colorWhite,
-        borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
             blurRadius: 30,

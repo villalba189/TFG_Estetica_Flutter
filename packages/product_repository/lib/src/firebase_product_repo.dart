@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -79,6 +80,21 @@ class FirebaseProductRepo implements ProductRepo {
       return url;
     } catch (e) {
       rethrow; // Esto permitirá que se maneje más arriba en la cadena.
+    }
+  }
+
+  @override
+  Future<void> deleteImagenStorage(ProductModel product) async {
+    log('Eliminando imagen de ${product.name}');
+    try {
+      final ref = this
+          .ref
+          .child('products')
+          .child(product.name!)
+          .child(product.productId!);
+      await ref.delete();
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

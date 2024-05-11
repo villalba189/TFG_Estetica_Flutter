@@ -57,14 +57,14 @@ extension ShowDeleteDialog on BuildContext {
                 if (product != null) {
                   productPageBloc!.add(Event(
                       ProductPageEventsType.deleteProduct,
-                      data: product.productId));
+                      data: product));
                 } else if (service != null) {
                   servicePageBloc!.add(Event(
                       ServicePageEventsType.deleteService,
-                      data: service.serviceId));
+                      data: service));
                 } else if (client != null) {
-                  clientPageBloc!.add(Event(ClientPageEventsType.deleteClient,
-                      data: client.clientId));
+                  clientPageBloc!.add(
+                      Event(ClientPageEventsType.deleteClient, data: client));
                 }
                 Navigator.of(context).pop();
               },

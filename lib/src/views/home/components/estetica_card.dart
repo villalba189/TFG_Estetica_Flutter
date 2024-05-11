@@ -28,9 +28,10 @@ class EsteticaCard extends StatelessWidget {
             child: Image.network(
               product?.image ??
                   service?.image ??
-                  'https://via.placeholder.com/150',
+                  'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7',
               errorBuilder: (context, error, stackTrace) {
-                return Image.network('https://via.placeholder.com/150');
+                return Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7');
               },
               fit: BoxFit.cover,
               height: double.maxFinite,

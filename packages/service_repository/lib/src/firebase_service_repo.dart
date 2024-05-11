@@ -79,4 +79,18 @@ class FirebaseServiceRepo implements ServiceRepo {
       rethrow; // Esto permitirá que se maneje más arriba en la cadena.
     }
   }
+
+  @override
+  Future<void> deleteImagenStorage(ServiceModel service) async {
+    try {
+      final ref = this
+          .ref
+          .child('services')
+          .child(service.name!)
+          .child(service.serviceId!);
+      await ref.delete();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

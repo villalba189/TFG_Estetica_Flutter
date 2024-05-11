@@ -1,15 +1,11 @@
 import 'dart:developer';
 
-import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/widgets/estetica_botton_sheet.dart';
 import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_repository/service_repository.dart';
-import 'package:ticket_repository/ticket_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
-import '../../../blocs/image_picker_cubit.dart';
 import '../../../components/estetica_card.dart';
 import '../../ticket/bloc/ticket_bloc.dart';
 import '../bloc/service_page_bloc.dart';
@@ -19,8 +15,8 @@ class ServicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ServiceModel> services =
-        context.select((ServicePageBloc value) => value.services);
+    List<ServiceModel> servicesFiltered =
+        context.select((ServicePageBloc value) => value.servicesFiltered);
     BlocEvent stateService =
         context.select((ServicePageBloc value) => value.state);
 
@@ -50,7 +46,7 @@ class ServicePage extends StatelessWidget {
               child: Wrap(
                 spacing: 15,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: services
+                children: servicesFiltered
                     .map(
                       (service) => GestureDetector(
                           onTap: () {

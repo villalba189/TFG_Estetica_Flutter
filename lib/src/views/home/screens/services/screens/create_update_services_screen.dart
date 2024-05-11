@@ -217,7 +217,7 @@ class FormularioService extends StatelessWidget {
                                                               .text,
                                                       price: price,
                                                       image: _imagePath == ''
-                                                          ? 'https://via.placeholder.com/150'
+                                                          ? 'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7'
                                                           : _imagePath,
                                                     ),
                                                   ),

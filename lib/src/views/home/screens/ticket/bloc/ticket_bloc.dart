@@ -18,7 +18,8 @@ enum TicketEventType {
   addTicketLine,
   addClient,
   finalizeTicket,
-  editTick,
+  editTicket,
+  deleteTicket,
   sendTicket,
   cashPayment,
 }
@@ -97,7 +98,7 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             emit(Failure(event.eventType, errorType: e.toString()));
           }
           break;
-        case TicketEventType.editTick:
+        case TicketEventType.editTicket:
           log('editTick');
           emit(Loading(event.eventType));
           try {
@@ -210,20 +211,8 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
           log('finalizeTicket loaded');
           emit.call(Loading(event.eventType));
           try {
-            // ticketRepository.addTicket(
-            //   TicketModel(
-            //     client: client,
-            //     lineas: ticketLineas,
-            //     total: total.toString(),
-            //     totalDes: totalDiscount.toString(),
-            //     date: DateTime.now(),
-            //     id: FirebaseTicketRepo().ticketsCollection.doc().id,
-            //   ),
-            // );
-            // add(Event(TicketEventType.initial));
-            // Navigator.pop(context);
-            context.showMetodoPagoDialog(
-              ticket: TicketModel(
+            ticketRepository.addTicket(
+              TicketModel(
                 client: client,
                 lineas: ticketLineas,
                 total: total.toString(),
@@ -232,12 +221,36 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
                 id: FirebaseTicketRepo().ticketsCollection.doc().id,
               ),
             );
+            add(Event(TicketEventType.initial));
+            Navigator.pop(context);
+            // context.showMetodoPagoDialog(
+            //   ticket: TicketModel(
+            //     client: client,
+            //     lineas: ticketLineas,
+            //     total: total.toString(),
+            //     totalDes: totalDiscount.toString(),
+            //     date: DateTime.now(),
+            //     id: FirebaseTicketRepo().ticketsCollection.doc().id,
+            //   ),
+            // );
             emit.call(Success(event.eventType));
           } catch (e) {
             log('finalizeTicket error: $e');
             emit.call(Failure(event.eventType, errorType: e.toString()));
           }
           break;
+        case TicketEventType.deleteTicket:
+          log('deleteTicket');
+          emit.call(Loading(event.eventType));
+          try {
+            ticketRepository.deleteTicket(event.data as TicketModel);
+            emit.call(Success(event.eventType));
+          } catch (e) {
+            log('deleteTicket error: $e');
+            emit.call(Failure(event.eventType, errorType: e.toString()));
+          }
+          break;
+
         case TicketEventType.cashPayment:
           emit(Loading(event.eventType));
           try {

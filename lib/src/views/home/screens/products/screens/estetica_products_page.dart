@@ -13,8 +13,8 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ProductModel> products =
-        context.select((ProductPageBloc value) => value.products);
+    List<ProductModel> productsFiltered =
+        context.select((ProductPageBloc value) => value.productsFiltered);
     BlocEvent stateProduct =
         context.select((ProductPageBloc value) => value.state);
     return BlocConsumer<TicketBloc, BlocEvent>(
@@ -42,7 +42,7 @@ class ProductPage extends StatelessWidget {
               child: Wrap(
                 spacing: 15,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: products
+                children: productsFiltered
                     .map(
                       (product) => GestureDetector(
                           onTap: () {

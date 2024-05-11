@@ -7,4 +7,5 @@ abstract class ClientRepo {
   Future<void> updateClient(ClientModel client);
   Future<void> deleteClient(String id);
   Future<String> addImagenStorage(String id, String name, String imagePath);
+  Future<void> deleteImagenStorage(ClientModel client);
 }
