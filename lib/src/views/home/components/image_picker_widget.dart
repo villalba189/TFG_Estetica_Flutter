@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:estetica_app/src/styles/colors.dart';
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -64,7 +65,7 @@ class ImagePickerWidget extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.camera),
-              title: const Text('Tomar una foto'),
+              title: const Text(AppStrings.takePhoto),
               onTap: () {
                 Navigator.pop(context);
                 _showPickeImage(context, ImageSource.camera);
@@ -72,7 +73,7 @@ class ImagePickerWidget extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.image),
-              title: const Text('Seleccionar una foto de la galería'),
+              title: const Text(AppStrings.chooseFromGallery),
               onTap: () {
                 Navigator.pop(context);
                 _showPickeImage(context, ImageSource.gallery);

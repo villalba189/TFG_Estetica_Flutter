@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ class ImagePickerCubit extends Cubit<String> {
   ImagePickerCubit() : super('');
 
   void setImageFile(File image) {
-    log('ImagePickerCubit setImageFile${image.path}');
     imageFile = image;
     emit(imageFile!.path);
   }

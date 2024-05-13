@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:estetica_app/src/class/bloc_events_class.dart';
+import 'package:estetica_app/src/views/home/screens/services/resources/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_repository/service_repository.dart';
 
@@ -138,12 +137,12 @@ class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
 
           if (name.isEmpty) {
             emit.call(Failure(event.eventType));
-            nameError = 'Name is required';
+            nameError = ServicesStrings.serviceNameRequired;
             nameErrorVisible = true;
             return;
           } else if (!isValidName) {
             emit.call(Failure(event.eventType));
-            nameError = 'Invalid name';
+            nameError = ServicesStrings.serviceNameInvalid;
             nameErrorVisible = true;
             return;
           } else {
@@ -158,16 +157,16 @@ class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
           int dotIndex = priceString.indexOf('.');
           if (price == null) {
             emit.call(Failure(event.eventType));
-            priceError = 'Precio es equerido';
+            priceError = ServicesStrings.servicePriceRequired;
             priceErrorVisible = true;
           } else if (price.isNegative || price == 0) {
             emit.call(Failure(event.eventType));
-            priceError = 'El precio no puede ser negativo o 0';
+            priceError = ServicesStrings.servicePriceInvalidNegative;
             priceErrorVisible = true;
           } else if (dotIndex != -1 &&
               priceString.substring(dotIndex + 1).length > 2) {
             emit.call(Failure(event.eventType));
-            priceError = 'El precio no puede tener mas de 2 decimales';
+            priceError = ServicesStrings.servicePriceInvalidDecimals;
             priceErrorVisible = true;
           } else {
             priceErrorVisible = false;
@@ -183,7 +182,7 @@ class ServicePageBloc extends Bloc<BlocEvent, BlocEvent> {
             emit.call(Success(event.eventType));
           } else if (description.length < 5) {
             emit.call(Failure(event.eventType));
-            descriptionError = 'Descripcion no valida';
+            descriptionError = ServicesStrings.serviceDescriptionInvalid;
             descriptionErrorVisible = true;
           } else {
             descriptionErrorVisible = false;

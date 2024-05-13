@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../styles/colors.dart';
+import '../resources/colors.dart';
 
 class EsteticaCircularProgressIndicator extends StatelessWidget {
   final double? size;

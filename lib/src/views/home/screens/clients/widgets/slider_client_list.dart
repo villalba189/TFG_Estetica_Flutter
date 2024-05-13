@@ -1,10 +1,11 @@
 import 'package:client_repository/client_repository.dart';
+import 'package:estetica_app/src/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../../../styles/colors.dart';
+import '../../../../../resources/colors.dart';
 import '../../../blocs/image_picker_cubit.dart';
 import '../bloc/client_page_bloc.dart';
 import '../screens/create_update_clients_screen.dart';
@@ -19,7 +20,7 @@ class SlidableClient extends StatelessWidget {
     return Slidable(
       key: const ValueKey(0),
       startActionPane: ActionPane(
-        extentRatio: 0.4,
+        extentRatio: 0.45,
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
@@ -27,10 +28,10 @@ class SlidableClient extends StatelessWidget {
               client: client,
               clientPageBloc: context.read<ClientPageBloc>(),
             ),
-            backgroundColor: const Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.colorRed,
+            foregroundColor: AppColors.colorWhite,
             icon: Icons.delete,
-            label: 'Delete',
+            label: AppStrings.delete,
           ),
           SlidableAction(
             onPressed: (context) {
@@ -42,10 +43,10 @@ class SlidableClient extends StatelessWidget {
                 ),
               ));
             },
-            backgroundColor: const Color(0xFF21B7CA),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.colorCian,
+            foregroundColor: AppColors.colorWhite,
             icon: Icons.edit,
-            label: 'Edit',
+            label: AppStrings.edit,
           ),
         ],
       ),
@@ -60,7 +61,7 @@ class SlidableClient extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: AppColors.colorGrey.withOpacity(0.5),
               spreadRadius: 1,
               blurRadius: 1,
               offset: Offset(0, 2), // Cambios en la sombra

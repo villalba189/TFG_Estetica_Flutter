@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:client_repository/client_repository.dart';
-import 'package:estetica_app/src/styles/colors.dart';
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/home_bloc.dart';
+import 'package:estetica_app/src/views/home/screens/ticket/resources/strings.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket_list.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +30,8 @@ class TicketScreen extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: AppColors.primaryColor),
-            accountName: Text(client.name ?? 'Invitado'),
-            accountEmail: Text(client.email ?? 'Sin correo'),
+            accountName: Text(client.name ?? TicketStrings.invitado),
+            accountEmail: Text(client.email ?? TicketStrings.invitadoEmail),
             currentAccountPicture: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -97,12 +97,12 @@ class TicketScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 16),
                   ),
                 },
-                const SizedBox(height: 16),
+                AppSpaces.spaceH16,
                 SizedBox(
                   width: double.infinity,
                   child: EsteticaButton(
                       model: EsteticaButtonModel(
-                        text: 'Finalizar Ticket',
+                        text: TicketStrings.finalizeTicket,
                         type: EsteticaButtonType.secondary,
                         isLoading: stateTicket is Loading,
                         isEnable: ticketLines.isNotEmpty,

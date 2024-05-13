@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../styles/colors.dart';
-import '../styles/styles.dart';
+import '../resources/colors.dart';
+import '../resources/styles.dart';
 
 enum EsteticaTextFormFieldType {
   text,
@@ -84,7 +84,9 @@ class EsteticaTextFormField extends StatelessWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                counterText: model.maxLength != null ? '' : null,
+                counterText: model.maxLength != null
+                    ? '${model.maxLength}/ ${model.controller?.text.length ?? 0}'
+                    : null,
                 contentPadding: const EdgeInsets.all(8.0),
                 hintText: model.hintText,
                 helperText: model.helperText,

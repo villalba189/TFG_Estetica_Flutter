@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
-import '../../../../../styles/colors.dart';
-import '../../../../../styles/spaces.dart';
+import '../../../../../resources/colors.dart';
+import '../../../../../resources/spaces.dart';
 import '../../../../../widgets/estetica_button.dart';
 import 'card_payment_dailog.dart';
 import 'cash_payment_dialog.dart';

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../styles/colors.dart';
-import '../styles/spaces.dart';
-import '../styles/styles.dart';
-import '../views/home/blocs/image_picker_cubit.dart';
+import '../resources/colors.dart';
+import '../resources/spaces.dart';
+import '../resources/styles.dart';
 import 'estetica_circular_progress_indicator.dart';
 
 enum EsteticaButtonType {

@@ -1,4 +1,5 @@
 import 'package:client_repository/client_repository.dart';
+import 'package:estetica_app/src/views/home/screens/clients/resources/strings.dart';
 
 import '../../../../../class/bloc_events_class.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,12 +146,12 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           bool isValidName = nameRegex.hasMatch(name);
           if (name.isEmpty) {
             emit.call(Failure(event.eventType));
-            nameError = 'Name is required';
+            nameError = ClientStrings.nameIsRequired;
             nameErrorVisible = true;
             return;
           } else if (!isValidName) {
             emit.call(Failure(event.eventType));
-            nameError = 'Invalid name';
+            nameError = ClientStrings.invalidName;
             nameErrorVisible = true;
             return;
           } else {
@@ -171,7 +172,7 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
             return;
           } else if (!isValidSurname) {
             emit.call(Failure(event.eventType));
-            surnameError = 'Invalid surname';
+            surnameError = ClientStrings.invalidSurname;
             surnameErrorVisible = true;
             return;
           } else {
@@ -186,12 +187,12 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           bool isValidEmail = emailRegex.hasMatch(email);
           if (email.isEmpty) {
             emit.call(Failure(event.eventType));
-            emailError = 'Email is required';
-            emailErrorVisible = true;
+            emailError = '';
+            emailErrorVisible = false;
             return;
           } else if (!isValidEmail) {
             emit.call(Failure(event.eventType));
-            emailError = 'Invalid email';
+            emailError = ClientStrings.invalidEmail;
             emailErrorVisible = true;
             return;
           } else {
@@ -208,12 +209,12 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           bool isValidPhone = phoneRegex.hasMatch(phone);
           if (phone.isEmpty) {
             emit.call(Failure(event.eventType));
-            phoneError = 'Phone is required';
-            phoneErrorVisible = true;
+            phoneError = '';
+            phoneErrorVisible = false;
             return;
           } else if (!isValidPhone) {
             emit.call(Failure(event.eventType));
-            phoneError = 'Invalid phone';
+            phoneError = ClientStrings.invalidPhone;
             phoneErrorVisible = true;
             return;
           } else {

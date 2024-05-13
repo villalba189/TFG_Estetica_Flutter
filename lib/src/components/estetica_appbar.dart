@@ -1,9 +1,13 @@
+import 'package:estetica_app/src/views/home/screens/clients/bloc/client_page_bloc.dart';
+import 'package:estetica_app/src/views/home/screens/products/bloc/product_page_bloc.dart';
+import 'package:estetica_app/src/views/home/screens/services/bloc/service_page_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../class/bloc_events_class.dart';
-import '../styles/colors.dart';
-import '../styles/styles.dart';
+import '../resources/colors.dart';
+import '../resources/styles.dart';
 import '../views/home/screens/ticket/bloc/ticket_bloc.dart';
 
 SliverAppBar esteticaBar(
@@ -13,13 +17,13 @@ SliverAppBar esteticaBar(
     required bool ticketActive,
     required BuildContext context}) {
   return SliverAppBar(
-    shadowColor: Colors.grey,
+    shadowColor: AppColors.colorGrey,
     flexibleSpace: FlexibleSpaceBar(
       background: Container(
-        color: Colors.white,
+        color: AppColors.colorWhite,
       ),
     ),
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.colorWhite,
     elevation: 5.0,
     forceElevated: true,
     pinned: true,
@@ -60,7 +64,7 @@ SliverAppBar esteticaBar(
                         right: 0,
                         top: 0,
                         child: Icon(Icons.brightness_1,
-                            size: 10, color: Colors.red),
+                            size: 10, color: AppColors.colorRed),
                       ),
                     ],
                   ],
@@ -81,15 +85,28 @@ SliverAppBar esteticaBar(
     ),
     actions: [
       if (actionsActive) ...[
-        Container(
-          padding: const EdgeInsets.all(7.0),
-          margin: const EdgeInsets.only(right: 5),
-          decoration: const ShapeDecoration(
-            color: AppColors.primaryColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        GestureDetector(
+          onTap: () {
+            context
+                .read<ProductPageBloc>()
+                .add(Event(ProductPageEventsType.getProducts));
+            context
+                .read<ServicePageBloc>()
+                .add(Event(ServicePageEventsType.getServices));
+            context
+                .read<ClientPageBloc>()
+                .add(Event(ClientPageEventsType.getClients));
+          },
+          child: Container(
+            padding: const EdgeInsets.all(7.0),
+            margin: const EdgeInsets.only(right: 5),
+            decoration: const ShapeDecoration(
+              color: AppColors.primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            ),
+            child: const Icon(Icons.rotate_left_sharp, color: Colors.white),
           ),
-          child: const Icon(Icons.settings, color: Colors.white),
         ),
       ]
     ],

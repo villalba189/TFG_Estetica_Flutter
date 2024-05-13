@@ -1,5 +1,6 @@
 import 'package:brand_repository/brand_repository.dart';
 import 'package:client_repository/client_repository.dart';
+import 'package:estetica_app/src/resources/strings.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
 import 'class/bloc_events_class.dart';
-import 'styles/colors.dart';
+import 'resources/colors.dart';
 import 'views/home/blocs/home_bloc.dart';
 import 'views/home/blocs/image_picker_cubit.dart';
 import 'views/home/screens/clients/bloc/client_page_bloc.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Estetica app TFG',
+      title: AppStrings.appName,
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
         scaffoldBackgroundColor: Colors.white,

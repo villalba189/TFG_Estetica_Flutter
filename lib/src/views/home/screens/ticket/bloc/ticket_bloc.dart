@@ -2,10 +2,6 @@ import 'dart:developer';
 
 import 'package:client_repository/client_repository.dart';
 import 'package:estetica_app/src/class/bloc_events_class.dart';
-import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/styles/spaces.dart';
-import 'package:estetica_app/src/views/home/screens/ticket/widgets/paymant_dialog.dart';
-import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
-import '../../../../../styles/spaces.dart';
+import '../../../../../resources/spaces.dart';
 import '../../../../../widgets/estetica_button.dart';
 import '../bloc/ticket_bloc.dart';
 

@@ -1,3 +1,5 @@
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:product_repository/product_repository.dart';
@@ -53,7 +55,7 @@ class CustomBottomSheet extends StatelessWidget {
             width: 70,
             alignment: Alignment.center,
             child: const Divider(
-              color: Color(0xFFCCCCCC),
+              color: AppColors.colorGrey,
               thickness: 6.0,
             ),
           ),
@@ -63,7 +65,7 @@ class CustomBottomSheet extends StatelessWidget {
             child: Text(
               product != null ? product?.name ?? '' : service?.name ?? '',
               style: const TextStyle(
-                color: Color(0xFF000000),
+                color: AppColors.colorBlack,
                 fontSize: 20,
               ),
             ),
@@ -73,7 +75,7 @@ class CustomBottomSheet extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            "Editar ${product != null ? "Producto" : "Servicio"}",
+            "Editar ${product != null ? AppStrings.product : AppStrings.service}",
             style: const TextStyle(
               color: Color(0xFF000000),
               fontSize: 15,
@@ -105,7 +107,7 @@ class CustomBottomSheet extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            "Eliminar ${product != null ? "Producto" : "Servicio"}",
+            "Eliminar ${product != null ? AppStrings.product : AppStrings.service}",
             style: const TextStyle(
               color: Colors.red,
               fontSize: 15,

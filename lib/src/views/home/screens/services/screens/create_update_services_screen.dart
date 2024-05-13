@@ -1,3 +1,6 @@
+import 'package:estetica_app/src/resources/images.dart';
+import 'package:estetica_app/src/resources/spaces.dart';
+import 'package:estetica_app/src/views/home/screens/services/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_repository/service_repository.dart';
@@ -83,7 +86,9 @@ class FormularioService extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             esteticaBar(
-              titulo: 'Estetica Beatriz',
+              titulo: service != null
+                  ? ServicesStrings.updateService
+                  : ServicesStrings.addService,
               leadingActive: true,
               actionsActive: false,
               ticketActive: false,
@@ -95,20 +100,20 @@ class FormularioService extends StatelessWidget {
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
                     children: [
-                      SizedBox(height: 24),
+                      AppSpaces.spaceH24,
                       ImagePickerWidget(
                         onImageSelected: (_image) {
                           context.read<ImagePickerCubit>().setImageFile(_image);
                         },
                         imagePath: (image == '' ? service?.image : image) ?? '',
                       ),
-                      SizedBox(height: 24),
+                      AppSpaces.spaceH24,
                       EsteticaTextFormField(
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.text,
                           controller: nameController,
-                          labelText: 'Name',
-                          hintText: 'Enter your name',
+                          labelText: ServicesStrings.serviceName,
+                          hintText: ServicesStrings.serviceHintName,
                           errorText: nameErrorVisible ? nameError : null,
                         ),
                         onChanged: (value) {
@@ -118,13 +123,13 @@ class FormularioService extends StatelessWidget {
                           ));
                         },
                       ),
-                      SizedBox(height: 24),
+                      AppSpaces.spaceH24,
                       EsteticaTextFormField(
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.text,
                           controller: descriptionController,
-                          labelText: 'Description',
-                          hintText: 'Enter your description',
+                          labelText: ServicesStrings.serviceDescription,
+                          hintText: ServicesStrings.serviceHintDescription,
                           errorText:
                               descriptionErrorVisible ? descriptionError : null,
                         ),
@@ -135,13 +140,13 @@ class FormularioService extends StatelessWidget {
                           ));
                         },
                       ),
-                      SizedBox(height: 24),
+                      AppSpaces.spaceH24,
                       EsteticaTextFormField(
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.number,
                           controller: priceController,
-                          labelText: 'Price',
-                          hintText: 'Enter your price',
+                          labelText: ServicesStrings.servicePrice,
+                          hintText: ServicesStrings.serviceHintPrice,
                           errorText: priceErrorVisible ? priceError : null,
                         ),
                         onChanged: (value) {
@@ -151,14 +156,14 @@ class FormularioService extends StatelessWidget {
                           ));
                         },
                       ),
-                      SizedBox(height: 24),
+                      AppSpaces.spaceH24,
                       SizedBox(
                         width: double.infinity,
                         child: EsteticaButton(
                           model: EsteticaButtonModel(
                             text: service != null
-                                ? 'Update Service'
-                                : 'Add Service',
+                                ? ServicesStrings.updateService
+                                : ServicesStrings.addService,
                             type: EsteticaButtonType.primary,
                             isLoading: state is Loading,
                             isEnable: nameController.text.isNotEmpty &&
@@ -217,7 +222,8 @@ class FormularioService extends StatelessWidget {
                                                               .text,
                                                       price: price,
                                                       image: _imagePath == ''
-                                                          ? 'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7'
+                                                          ? AppImages
+                                                              .imagenPorDefecto
                                                           : _imagePath,
                                                     ),
                                                   ),

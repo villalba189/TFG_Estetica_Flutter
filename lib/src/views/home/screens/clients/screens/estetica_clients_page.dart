@@ -1,4 +1,5 @@
 import 'package:client_repository/client_repository.dart';
+import 'package:estetica_app/src/views/home/screens/clients/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../class/bloc_events_class.dart';
@@ -46,7 +47,7 @@ class ClientPage extends StatelessWidget {
             );
           case Failure:
             return const Center(
-              child: Text('Error al cargar los clientes'),
+              child: Text(ClientStrings.errorLoadingClients),
             );
           case Loading:
             return const Center(

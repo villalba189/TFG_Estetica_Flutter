@@ -1,3 +1,4 @@
+import 'package:estetica_app/src/views/home/screens/products/resources/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:brand_repository/brand_repository.dart';
@@ -28,7 +29,8 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
   List<ProductModel> products = [];
   List<ProductModel> productsFiltered = [];
   List<BrandModel> marcas = [];
-  String marcaActual = 'Todas';
+
+  String marcaActual = ProductsStrings.brandTodas;
 
   String nameError = '';
   String priceError = '';
@@ -44,7 +46,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
     on<Event>((event, emit) async {
       switch (event.eventType) {
         case ProductPageEventsType.filterByName:
-          marcaActual = 'Todas';
+          marcaActual = ProductsStrings.brandTodas;
           emit.call(Loading(event.eventType));
           if (event.data == '') {
             productsFiltered = products;
@@ -63,9 +65,9 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           break;
         case ProductPageEventsType.filterByBrand:
           emit.call(Loading(event.eventType));
-          if (event.data == 'Todas') {
+          if (event.data == ProductsStrings.brandTodas) {
             productsFiltered = products;
-            marcaActual = 'Todas';
+            marcaActual = ProductsStrings.brandTodas;
             emit.call(Success(event.eventType));
             return;
           }
@@ -82,11 +84,15 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
         case ProductPageEventsType.getProducts:
           emit.call(Loading(event.eventType));
 
-          marcaActual = 'Todas';
+          marcaActual = ProductsStrings.brandTodas;
           try {
             productsBack = await _productRepository.getProducts();
             marcas = await _brandRepository.getBrands();
-            marcas.insert(0, BrandModel(id: 'Todas', name: 'Todas'));
+            marcas.insert(
+                0,
+                BrandModel(
+                    id: ProductsStrings.brandTodas,
+                    name: ProductsStrings.brandTodas));
             products = productsBack;
             productsFiltered = products;
             emit.call(Success(event.eventType));
@@ -110,7 +116,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           ProductModel product = event.data as ProductModel;
           try {
             _productRepository.deleteProduct(product.productId!);
-            _productRepository.deleteImagenStorage(product);
+            await _productRepository.deleteImagenStorage(product);
             products.removeWhere(
                 (element) => element.productId == product.productId);
 
@@ -155,12 +161,12 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           bool isValidName = nameRegex.hasMatch(name);
           if (name.isEmpty) {
             emit.call(Failure(event.eventType));
-            nameError = 'Name is required';
+            nameError = ProductsStrings.productNameRequired;
             nameErrorVisible = true;
             return;
           } else if (!isValidName) {
             emit.call(Failure(event.eventType));
-            nameError = 'Invalid name';
+            nameError = ProductsStrings.productNameInvalid;
             nameErrorVisible = true;
             return;
           } else {
@@ -175,16 +181,16 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           int dotIndex = priceString.indexOf('.');
           if (price == null) {
             emit.call(Failure(event.eventType));
-            priceError = 'Precio es equerido';
+            priceError = ProductsStrings.productPriceRequired;
             priceErrorVisible = true;
           } else if (price.isNegative || price == 0) {
             emit.call(Failure(event.eventType));
-            priceError = 'El precio no puede ser negativo o 0';
+            priceError = ProductsStrings.productPriceInvalidNegative;
             priceErrorVisible = true;
           } else if (dotIndex != -1 &&
               priceString.substring(dotIndex + 1).length > 2) {
             emit.call(Failure(event.eventType));
-            priceError = 'El precio no puede tener mas de 2 decimales';
+            priceError = ProductsStrings.productPriceInvalidDecimals;
             priceErrorVisible = true;
           } else {
             priceErrorVisible = false;
@@ -201,7 +207,7 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
             emit.call(Success(event.eventType));
           } else if (description.length < 5) {
             emit.call(Failure(event.eventType));
-            descriptionError = 'Descripcion no valida';
+            descriptionError = ProductsStrings.productDescriptionInvalid;
             descriptionErrorVisible = true;
           } else {
             descriptionErrorVisible = false;

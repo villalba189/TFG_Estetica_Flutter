@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:client_repository/client_repository.dart';
-import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/styles/spaces.dart';
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
+import 'package:estetica_app/src/views/home/screens/clients/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +97,9 @@ class FormularioClient extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             esteticaBar(
-                titulo: 'Estetica Beatriz',
+                titulo: client != null
+                    ? ClientStrings.updateClient
+                    : ClientStrings.addClient,
                 leadingActive: true,
                 actionsActive: false,
                 ticketActive: false,
@@ -121,8 +122,8 @@ class FormularioClient extends StatelessWidget {
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.text,
                           controller: nameController,
-                          labelText: 'Name',
-                          hintText: 'Enter your name',
+                          labelText: ClientStrings.name,
+                          hintText: ClientStrings.hintName,
                           errorText: nameErrorVisible ? nameError : null,
                         ),
                         onChanged: (String value) {
@@ -137,8 +138,8 @@ class FormularioClient extends StatelessWidget {
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.text,
                           controller: surnameController,
-                          labelText: 'Surname',
-                          hintText: 'Enter your surname',
+                          labelText: ClientStrings.surname,
+                          hintText: ClientStrings.hintSurname,
                           errorText: surnameErrorVisible ? surnameError : null,
                         ),
                         onChanged: (String value) {
@@ -153,8 +154,8 @@ class FormularioClient extends StatelessWidget {
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.email,
                           controller: emailController,
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
+                          labelText: ClientStrings.email,
+                          hintText: ClientStrings.hintEmail,
                           errorText: emailErrorVisible ? emailError : null,
                         ),
                         onChanged: (String value) {
@@ -169,8 +170,8 @@ class FormularioClient extends StatelessWidget {
                         model: EsteticaTextFormFieldModel(
                           type: EsteticaTextFormFieldType.phone,
                           controller: phoneController,
-                          labelText: 'Phone',
-                          hintText: 'Enter your phone',
+                          labelText: ClientStrings.phone,
+                          hintText: ClientStrings.hintPhone,
                           errorText: phoneErrorVisible ? phoneError : null,
                         ),
                         onChanged: (String value) {
@@ -185,29 +186,29 @@ class FormularioClient extends StatelessWidget {
                         value: client?.discount ?? 0,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Discount',
-                          hintText: 'Select discount',
+                          labelText: ClientStrings.discount,
+                          hintText: ClientStrings.hintDiscount,
                         ),
                         items: const [
                           DropdownMenuItem<int>(
                             value: 0,
-                            child: Text('No discount'),
+                            child: Text(ClientStrings.noDiscount),
                           ),
                           DropdownMenuItem<int>(
                             value: 5,
-                            child: Text('5% discount'),
+                            child: Text(ClientStrings.discount5),
                           ),
                           DropdownMenuItem<int>(
                             value: 10,
-                            child: Text('10% discount'),
+                            child: Text(ClientStrings.discount10),
                           ),
                           DropdownMenuItem<int>(
                             value: 15,
-                            child: Text('15% discount'),
+                            child: Text(ClientStrings.discount15),
                           ),
                           DropdownMenuItem<int>(
                             value: 20,
-                            child: Text('20% discount'),
+                            child: Text(ClientStrings.discount20),
                           ),
                         ],
                         onChanged: (value) {
@@ -221,8 +222,8 @@ class FormularioClient extends StatelessWidget {
                         child: EsteticaButton(
                           model: EsteticaButtonModel(
                               text: client != null
-                                  ? 'Update Client'
-                                  : 'Add Client',
+                                  ? ClientStrings.updateClient
+                                  : ClientStrings.addClient,
                               type: EsteticaButtonType.primary,
                               isEnable: !nameErrorVisible &&
                                   !surnameErrorVisible &&
@@ -242,7 +243,6 @@ class FormularioClient extends StatelessWidget {
                                         nameController.text,
                                         image,
                                         (_imagePath) {
-                                          log('Image path: $_imagePath');
                                           if (client != null) {
                                             context.read<ClientPageBloc>().add(
                                                   Event(

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:estetica_app/src/views/home/screens/services/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,13 +40,12 @@ class ServicePage extends StatelessWidget {
             );
           case Failure:
             return const Center(
-              child: Text('Error al cargar los servicios'),
+              child: Text(ServicesStrings.errorLoadingServices),
             );
           case Success:
             return Center(
               child: Wrap(
-                spacing: 15,
-                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.spaceEvenly,
                 children: servicesFiltered
                     .map(
                       (service) => GestureDetector(
@@ -62,7 +62,7 @@ class ServicePage extends StatelessWidget {
 
           default:
             return const Center(
-              child: Text('Error al cargar los servicios'),
+              child: Text(ServicesStrings.errorLoadingServices),
             );
         }
       },

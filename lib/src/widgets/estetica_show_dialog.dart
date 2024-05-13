@@ -4,6 +4,7 @@ import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
 
 import '../class/bloc_events_class.dart';
+import '../resources/strings.dart';
 import '../views/home/screens/clients/bloc/client_page_bloc.dart';
 import '../views/home/screens/products/bloc/product_page_bloc.dart';
 import '../views/home/screens/services/bloc/service_page_bloc.dart';
@@ -22,7 +23,7 @@ extension ShowDeleteDialog on BuildContext {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Eliminar ${product != null ? "Producto" : service != null ? "Servicio" : "Cliente"}",
+            "Eliminar ${product != null ? AppStrings.product : service != null ? AppStrings.service : AppStrings.client}",
             style: const TextStyle(
               color: Color(0xFF000000),
               fontSize: 20,
@@ -45,7 +46,7 @@ extension ShowDeleteDialog on BuildContext {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                "Cancelar",
+                AppStrings.cancel,
                 style: TextStyle(
                   color: Color(0xFF000000),
                   fontSize: 15,
@@ -69,7 +70,7 @@ extension ShowDeleteDialog on BuildContext {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                "Eliminar",
+                AppStrings.delete,
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: 15,

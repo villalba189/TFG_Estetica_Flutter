@@ -1,9 +1,10 @@
+import 'package:estetica_app/src/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../../class/bloc_events_class.dart';
-import '../../../styles/colors.dart';
+import '../../../resources/colors.dart';
 import '../blocs/home_bloc.dart';
 
 class EsteticaBottomNavBar extends StatelessWidget {
@@ -36,21 +37,21 @@ class EsteticaBottomNavBar extends StatelessWidget {
               iconColor: AppColors.primaryColor,
               iconActiveColor: AppColors.colorWhite,
               textColor: AppColors.colorWhite,
-              text: 'Productos',
+              text: AppStrings.products,
             ),
             GButton(
               icon: Icons.airline_seat_flat_rounded,
               iconColor: AppColors.primaryColor,
               iconActiveColor: AppColors.colorWhite,
               textColor: AppColors.colorWhite,
-              text: 'Servicios',
+              text: AppStrings.services,
             ),
             GButton(
               icon: Icons.account_circle_rounded,
               iconColor: AppColors.primaryColor,
               iconActiveColor: AppColors.colorWhite,
               textColor: AppColors.colorWhite,
-              text: 'Clientes',
+              text: AppStrings.clients,
             ),
           ],
           selectedIndex: index,

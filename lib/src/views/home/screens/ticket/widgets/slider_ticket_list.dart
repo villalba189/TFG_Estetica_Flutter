@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/class/bloc_events_class.dart';
-import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/styles/spaces.dart';
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
@@ -31,8 +28,8 @@ class SlidableTicketLine extends StatelessWidget {
                   .read<TicketBloc>()
                   .add(Event(TicketEventType.incrementQuantity, data: line));
             },
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.colorGreen,
+            foregroundColor: AppColors.colorWhite,
             icon: Icons.add,
           ),
           SlidableAction(
@@ -41,8 +38,8 @@ class SlidableTicketLine extends StatelessWidget {
                   .read<TicketBloc>()
                   .add(Event(TicketEventType.decrementQuantity, data: line));
             },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.colorRed,
+            foregroundColor: AppColors.colorWhite,
             icon: Icons.remove,
           ),
         ],
@@ -57,8 +54,8 @@ class SlidableTicketLine extends StatelessWidget {
                   .read<TicketBloc>()
                   .add(Event(TicketEventType.deleteTicketLine, data: line));
             },
-            backgroundColor: Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.colorRed,
+            foregroundColor: AppColors.colorWhite,
             icon: Icons.delete,
           ),
         ],
@@ -70,10 +67,10 @@ class SlidableTicketLine extends StatelessWidget {
               data: line.product != null ? 0 : 1));
         },
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
+          decoration: const BoxDecoration(
+            color: AppColors.colorWhite,
             border: Border(
-              bottom: BorderSide(color: Colors.grey[300]!, width: 1),
+              bottom: BorderSide(color: AppColors.colorGrey, width: 1),
             ),
           ),
           child: ListTile(
@@ -90,14 +87,16 @@ class SlidableTicketLine extends StatelessWidget {
                 AppSpaces.spaceW10,
                 Text(line.product?.name ?? line.service?.name ?? ''),
                 AppSpaces.spaceW8,
-                Text("${line.product?.price ?? line.service?.price}\$",
-                    style:
-                        TextStyle(color: Colors.grey.shade900, fontSize: 12)),
+                Text("${line.product?.price ?? line.service?.price}€",
+                    style: const TextStyle(
+                        color: AppColors.colorBlack,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400)),
               ],
             ),
             leading: Text("${line.quantity} x"),
             trailing: Text(
-              "${line.subtotal}\$",
+              "${line.subtotal}€",
               style: const TextStyle(fontSize: 15, color: AppColors.colorGreen),
             ),
           ),

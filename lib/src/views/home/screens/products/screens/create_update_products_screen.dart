@@ -1,7 +1,9 @@
 import 'package:brand_repository/brand_repository.dart';
-import 'package:estetica_app/src/styles/colors.dart';
-import 'package:estetica_app/src/styles/spaces.dart';
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/resources/images.dart';
+import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/image_picker_cubit.dart';
+import 'package:estetica_app/src/views/home/screens/products/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +90,9 @@ class FormularioProduct extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           esteticaBar(
-              titulo: 'Estetica Beatriz',
+              titulo: product != null
+                  ? ProductsStrings.updateProduct
+                  : ProductsStrings.addProduct,
               leadingActive: true,
               actionsActive: false,
               ticketActive: false,
@@ -111,8 +115,8 @@ class FormularioProduct extends StatelessWidget {
                       model: EsteticaTextFormFieldModel(
                         type: EsteticaTextFormFieldType.text,
                         controller: nameController,
-                        labelText: 'Name',
-                        hintText: 'Enter your name',
+                        labelText: ProductsStrings.productName,
+                        hintText: ProductsStrings.productHintName,
                         errorText: nameErrorVisible ? nameError : null,
                       ),
                       onChanged: (String value) {
@@ -127,8 +131,8 @@ class FormularioProduct extends StatelessWidget {
                       model: EsteticaTextFormFieldModel(
                         type: EsteticaTextFormFieldType.text,
                         controller: descriptionController,
-                        labelText: 'Description',
-                        hintText: 'Enter your description',
+                        labelText: ProductsStrings.productDescription,
+                        hintText: ProductsStrings.productHintDescription,
                         errorText:
                             descriptionErrorVisible ? descriptionError : null,
                       ),
@@ -144,8 +148,8 @@ class FormularioProduct extends StatelessWidget {
                       model: EsteticaTextFormFieldModel(
                         type: EsteticaTextFormFieldType.number,
                         controller: priceController,
-                        labelText: 'Price',
-                        hintText: 'Enter your price',
+                        labelText: ProductsStrings.productPrice,
+                        hintText: ProductsStrings.productHintPrice,
                         errorText: priceErrorVisible ? priceError : null,
                       ),
                       onChanged: (String value) {
@@ -157,9 +161,9 @@ class FormularioProduct extends StatelessWidget {
                     ),
                     AppSpaces.spaceH24,
                     DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: AppColors.colorWhite,
                         border: OutlineInputBorder(),
                       ),
                       items: marcas.map((e) {
@@ -171,12 +175,9 @@ class FormularioProduct extends StatelessWidget {
                       onChanged: (value) {
                         brand = value!;
                       },
-                      icon: const Icon(
-                          Icons.arrow_drop_down), // Icono desplegable
-                      iconEnabledColor:
-                          Colors.black, // Color del icono del desplegable
-                      dropdownColor:
-                          Colors.white, // Color de fondo del menú desplegable
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconEnabledColor: AppColors.colorBlack,
+                      dropdownColor: AppColors.colorWhite,
                     ),
                     AppSpaces.spaceH24,
                     SizedBox(
@@ -184,8 +185,8 @@ class FormularioProduct extends StatelessWidget {
                       child: EsteticaButton(
                         model: EsteticaButtonModel(
                             text: product != null
-                                ? 'Update Product'
-                                : 'Add Product',
+                                ? ProductsStrings.updateProduct
+                                : ProductsStrings.addProduct,
                             type: EsteticaButtonType.primary,
                             isEnable: nameController.text.isNotEmpty &&
                                 priceController.text.isNotEmpty &&
@@ -244,7 +245,8 @@ class FormularioProduct extends StatelessWidget {
                                                     price: double.tryParse(
                                                         priceController.text),
                                                     image: _imagePath == ''
-                                                        ? 'https://firebasestorage.googleapis.com/v0/b/estetica-app-tfg.appspot.com/o/producto.webp?alt=media&token=83be52f9-d03b-4723-832d-efeafd9ac9b7'
+                                                        ? AppImages
+                                                            .imagenPorDefecto
                                                         : _imagePath,
                                                     brand: brand,
                                                   ),

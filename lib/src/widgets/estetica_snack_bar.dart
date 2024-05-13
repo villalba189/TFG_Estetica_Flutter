@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../styles/colors.dart';
-import '../styles/spaces.dart';
+import '../resources/colors.dart';
+import '../resources/spaces.dart';
 
 extension ShowSnackBar on BuildContext {
   void showSnackBar({
@@ -14,7 +14,7 @@ extension ShowSnackBar on BuildContext {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           elevation: 1,
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColorDark,
           padding: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
