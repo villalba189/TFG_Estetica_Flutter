@@ -32,11 +32,12 @@ void showPagoEfectivoDialog(
             children: [
               BlocBuilder<TicketBloc, BlocEvent>(
                 builder: (context, state) {
-                  double diferencia = state.data;
+                  double diferencia = 0;
                   String diferenciaTexto =
-                      double.parse(ticket.total).toStringAsFixed(2);
+                      double.parse(ticket.totalDes).toStringAsFixed(2);
                   if (state is Success &&
                       state.eventType == TicketEventType.cashPayment) {
+                    diferencia = state.data;
                     if (diferencia < 0) {
                       diferenciaTexto =
                           'Falta: ${(-diferencia).toStringAsFixed(2)}';
@@ -53,7 +54,9 @@ void showPagoEfectivoDialog(
                     style: TextStyle(
                       color: diferencia < 0
                           ? AppColors.colorRed
-                          : AppColors.colorGreen,
+                          : diferencia > 0
+                              ? AppColors.colorGreen
+                              : Colors.black,
                       fontSize: 18,
                     ),
                     textAlign: TextAlign.center,
