@@ -11,6 +11,7 @@ void showPagoRealizadoSuccessDialog({
   required BuildContext context,
   required TicketModel ticket,
   required String type,
+  required TicketBloc bloc,
 }) {
   showDialog(
     context: context,
@@ -39,9 +40,9 @@ void showPagoRealizadoSuccessDialog({
                   ),
                   onTapFunction: () {
                     Navigator.pop(context);
-                    context.read<TicketBloc>().add(
-                          Event(TicketEventType.initial),
-                        );
+                    bloc.add(
+                      Event(TicketEventType.saveTicket),
+                    );
                   },
                 ),
                 EsteticaButton(
@@ -52,9 +53,9 @@ void showPagoRealizadoSuccessDialog({
                   ),
                   onTapFunction: () {
                     Navigator.pop(context);
-                    context.read<TicketBloc>().add(
-                          Event(TicketEventType.sendTicket),
-                        );
+                    bloc.add(
+                      Event(TicketEventType.sendTicket),
+                    );
                   },
                 ),
               ],

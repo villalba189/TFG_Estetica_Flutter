@@ -232,14 +232,12 @@ class FormularioClient extends StatelessWidget {
                                   nameController.text.isNotEmpty,
                               isLoading: (state is Loading)),
                           onTapFunction: () {
+                            String id =
+                                FirebaseClientRepo().clientsCollection.doc().id;
                             context.read<ClientPageBloc>().add(
                                   Event(ClientPageEventsType.addImagenStorage,
                                       data: [
-                                        client?.clientId ??
-                                            FirebaseClientRepo()
-                                                .clientsCollection
-                                                .doc()
-                                                .id,
+                                        client?.clientId ?? id,
                                         nameController.text,
                                         image,
                                         (_imagePath) {
@@ -272,11 +270,7 @@ class FormularioClient extends StatelessWidget {
                                                     ClientPageEventsType
                                                         .addClient,
                                                     data: ClientModel(
-                                                      clientId:
-                                                          FirebaseClientRepo()
-                                                              .clientsCollection
-                                                              .doc()
-                                                              .id,
+                                                      clientId: id,
                                                       name: nameController.text,
                                                       surname: surnameController
                                                           .text,

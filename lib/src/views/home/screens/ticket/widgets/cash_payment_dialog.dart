@@ -10,62 +10,96 @@ import '../bloc/ticket_bloc.dart';
 import 'payment_success_dialog.dart';
 
 void showPagoEfectivoDialog(
-    {required TicketModel ticket, required BuildContext context}) {
+    {required TicketModel ticket,
+    required BuildContext context,
+    required TicketBloc bloc}) {
   TextEditingController cantidadController = TextEditingController();
 
   showDialog(
     context: context,
     builder: (context) {
-      bool isPaid = context.select((TicketBloc bloc) => bloc.isPaid);
-      String toPay = context.select((TicketBloc bloc) => bloc.toPay);
-      return AlertDialog(
-        titleTextStyle: const TextStyle(
-          color: Colors.blue,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        title: const Text('Pago en efectivo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Total ${isPaid ? "a deber" : "a pagar"}: $toPay€'),
-            AppSpaces.spaceH24,
-            const Text('Introduzca la cantidad a pagar:'),
-            AppSpaces.spaceH24,
-            EsteticaTextFormField(
-              model: EsteticaTextFormFieldModel(
-                controller: cantidadController,
-                hintText: 'Cantidad',
-                type: EsteticaTextFormFieldType.number,
+      return BlocProvider.value(
+        value: bloc,
+        child: AlertDialog(
+          titleTextStyle: const TextStyle(
+            color: Colors.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          title: const Text('Pago en efectivo'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BlocBuilder<TicketBloc, BlocEvent>(
+                builder: (context, state) {
+                  String diferenciaTexto =
+                      double.parse(ticket.total).toStringAsFixed(2);
+                  if (state is Success &&
+                      state.eventType == TicketEventType.cashPayment) {
+                    double diferencia = state.data;
+                    if (diferencia < 0) {
+                      diferenciaTexto =
+                          'Sobra: ${diferencia.toStringAsFixed(2)}';
+                    } else if (diferencia > 0) {
+                      diferenciaTexto =
+                          'Falta: ${diferencia.toStringAsFixed(2)}';
+                    } else {
+                      diferenciaTexto =
+                          'La cantidad introducida es exactamente el total';
+                    }
+                  }
+
+                  return Text(
+                    diferenciaTexto,
+                    style: const TextStyle(
+                      color: AppColors.colorBlack,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  );
+                },
               ),
-              onChanged: (p0) {
-                context.read<TicketBloc>().add(
-                      Event(TicketEventType.cashPayment,
-                          data: cantidadController.text),
-                    );
+              AppSpaces.spaceH24,
+              const Text('Introduzca la cantidad a pagar:'),
+              AppSpaces.spaceH24,
+              EsteticaTextFormField(
+                model: EsteticaTextFormFieldModel(
+                  controller: cantidadController,
+                  hintText: 'Cantidad',
+                  type: EsteticaTextFormFieldType.number,
+                ),
+                onChanged: (p0) {
+                  bloc.add(
+                    Event(TicketEventType.cashPayment,
+                        data: cantidadController.text),
+                  );
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
               },
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: AppColors.colorRed),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showPagoRealizadoSuccessDialog(
+                    context: context,
+                    ticket: ticket,
+                    type: "Efectivo",
+                    bloc: bloc);
+              },
+              child: const Text('Pagado'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(color: AppColors.colorRed),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              showPagoRealizadoSuccessDialog(
-                  context: context, ticket: ticket, type: "Efectivo");
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
       );
     },
   );

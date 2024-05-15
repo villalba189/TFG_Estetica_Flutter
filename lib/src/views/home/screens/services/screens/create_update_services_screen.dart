@@ -173,14 +173,14 @@ class FormularioService extends StatelessWidget {
                                 !priceErrorVisible,
                           ),
                           onTapFunction: () {
+                            String id = FirebaseServiceRepo()
+                                .servicesCollection
+                                .doc()
+                                .id;
                             context.read<ServicePageBloc>().add(
                                   Event(ServicePageEventsType.addImagenStorage,
                                       data: [
-                                        service?.serviceId ??
-                                            FirebaseServiceRepo()
-                                                .servicesCollection
-                                                .doc()
-                                                .id,
+                                        service?.serviceId ?? id,
                                         nameController.text,
                                         image,
                                         (_imagePath) {
@@ -211,11 +211,7 @@ class FormularioService extends StatelessWidget {
                                                     ServicePageEventsType
                                                         .addService,
                                                     data: ServiceModel(
-                                                      serviceId:
-                                                          FirebaseServiceRepo()
-                                                              .servicesCollection
-                                                              .doc()
-                                                              .id,
+                                                      serviceId: id,
                                                       name: nameController.text,
                                                       description:
                                                           descriptionController

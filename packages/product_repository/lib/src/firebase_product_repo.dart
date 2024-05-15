@@ -85,13 +85,15 @@ class FirebaseProductRepo implements ProductRepo {
 
   @override
   Future<void> deleteImagenStorage(ProductModel product) async {
-    log('Eliminando imagen de ${product.name}');
+    log('Eliminando imagen de ${product.name} , ${product.productId}');
+
     try {
       final ref = this
           .ref
           .child('products')
           .child(product.name!)
           .child(product.productId!);
+      // this.ref.child("products/Nivea/mudecxg6oXM8DJLQxZHA").delete();
       await ref.delete();
     } catch (e) {
       throw Exception(e);

@@ -2,6 +2,7 @@ import 'package:estetica_app/src/class/bloc_events_class.dart';
 import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
@@ -82,12 +83,19 @@ class SlidableTicketLine extends StatelessWidget {
                     line.product?.image ?? line.service?.image ?? '',
                     width: 40,
                     height: 40,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 AppSpaces.spaceW10,
-                Text(line.product?.name ?? line.service?.name ?? ''),
+                Expanded(
+                  child: Text(
+                    line.product?.name ?? line.service?.name ?? '',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 AppSpaces.spaceW8,
-                Text("${line.product?.price ?? line.service?.price}€",
+                Text(
+                    "${line.product?.price!.toStringAsFixed(2) ?? line.service?.price!.toStringAsFixed(2)}€",
                     style: const TextStyle(
                         color: AppColors.colorBlack,
                         fontSize: 12,

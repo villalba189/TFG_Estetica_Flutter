@@ -195,14 +195,12 @@ class FormularioProduct extends StatelessWidget {
                                 !priceErrorVisible,
                             isLoading: state is Loading),
                         onTapFunction: () {
+                          String id =
+                              FirebaseProductRepo().productsCollection.doc().id;
                           context.read<ProductPageBloc>().add(
                                 Event(ProductPageEventsType.addImagenStorage,
                                     data: [
-                                      product?.productId ??
-                                          FirebaseProductRepo()
-                                              .productsCollection
-                                              .doc()
-                                              .id,
+                                      product?.productId ?? id,
                                       nameController.text,
                                       image,
                                       (_imagePath) {
@@ -233,11 +231,7 @@ class FormularioProduct extends StatelessWidget {
                                                   ProductPageEventsType
                                                       .addProduct,
                                                   data: ProductModel(
-                                                    productId:
-                                                        FirebaseProductRepo()
-                                                            .productsCollection
-                                                            .doc()
-                                                            .id,
+                                                    productId: id,
                                                     name: nameController.text,
                                                     description:
                                                         descriptionController

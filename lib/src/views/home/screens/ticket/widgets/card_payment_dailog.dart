@@ -1,10 +1,16 @@
+import 'package:estetica_app/src/resources/colors.dart';
+import 'package:estetica_app/src/views/home/screens/ticket/bloc/ticket_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/payment_success_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
+
+import '../../../../../class/bloc_events_class.dart';
 
 void showPagoTarjetaDialog({
   required BuildContext context,
   required TicketModel ticket,
+  required TicketBloc bloc,
 }) {
   showDialog(
     context: context,
@@ -21,17 +27,36 @@ void showPagoTarjetaDialog({
           children: [
             const Text('Marca el total a pagar en el datafono.'),
             const Text('Total a pagar:'),
-            Text('${ticket.totalDes}€'),
+            Text(
+              '${double.parse(ticket.totalDes).toStringAsFixed(2)}€',
+              style: const TextStyle(
+                color: AppColors.colorBlack,
+                fontSize: 18,
+              ),
+            ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
+              Navigator.pop(context);
               showPagoRealizadoSuccessDialog(
-                  context: context, ticket: ticket, type: 'tarjeta');
+                  context: context,
+                  ticket: ticket,
+                  type: 'tarjeta',
+                  bloc: bloc);
             },
-            child: const Text('Aceptar'),
+            child: const Text('Pagado'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: AppColors.colorRed),
+            ),
+          )
         ],
       );
     },

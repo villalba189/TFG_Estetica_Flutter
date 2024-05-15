@@ -4,6 +4,7 @@ import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:estetica_app/src/views/home/blocs/home_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/resources/strings.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket_list.dart';
+import 'package:estetica_app/src/views/home/screens/ticket/widgets/paymant_dialog.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,9 +109,20 @@ class TicketScreen extends StatelessWidget {
                         isEnable: ticketLines.isNotEmpty,
                       ),
                       onTapFunction: () {
-                        context
-                            .read<TicketBloc>()
-                            .add(Event(TicketEventType.finalizeTicket));
+                        Navigator.pop(context);
+                        context.showMetodoPagoDialog(
+                            ticket: TicketModel(
+                              id: FirebaseTicketRepo()
+                                  .ticketsCollection
+                                  .doc()
+                                  .id,
+                              date: DateTime.now(),
+                              client: client,
+                              lineas: ticketLines,
+                              total: total.toString(),
+                              totalDes: totalDiscount.toString(),
+                            ),
+                            bloc: context.read<TicketBloc>());
                       }),
                 ),
               ],
