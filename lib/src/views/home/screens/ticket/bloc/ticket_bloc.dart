@@ -226,7 +226,7 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
               double total = totalDiscount;
               double cantidadIntroducida = double.parse(event.data);
 
-              double diferencia = total - cantidadIntroducida;
+              double diferencia = cantidadIntroducida - total;
               emit(Success(event.eventType, data: diferencia));
             } catch (e) {
               emit(Failure(event.eventType, errorType: e.toString()));
