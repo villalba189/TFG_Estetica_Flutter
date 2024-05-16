@@ -36,7 +36,7 @@ class SlidableClient extends StatelessWidget {
           SlidableAction(
             onPressed: (context) {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (_context) => CreateUpdateClientsScreen(
+                builder: (contextCli) => CreateUpdateClientsScreen(
                   client: client,
                   bloc: context.read<ClientPageBloc>(),
                   cubit: context.read<ImagePickerCubit>(),
@@ -64,7 +64,7 @@ class SlidableClient extends StatelessWidget {
               color: AppColors.colorGrey.withOpacity(0.5),
               spreadRadius: 1,
               blurRadius: 1,
-              offset: Offset(0, 2), // Cambios en la sombra
+              offset: const Offset(0, 2), // Cambios en la sombra
             ),
           ],
         ),

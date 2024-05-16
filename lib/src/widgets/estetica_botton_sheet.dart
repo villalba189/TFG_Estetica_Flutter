@@ -85,7 +85,7 @@ class CustomBottomSheet extends StatelessWidget {
             if (product != null) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_context) => CreateUpdateProductsScreen(
+                  builder: (contextProd) => CreateUpdateProductsScreen(
                     product: product,
                     bloc: productPageBloc!,
                     cubit: imagePickerCubit!,
@@ -95,7 +95,7 @@ class CustomBottomSheet extends StatelessWidget {
             } else {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_context) => CreateUpdateServicesScreen(
+                  builder: (contextServ) => CreateUpdateServicesScreen(
                     service: service,
                     bloc: servicePageBloc!,
                     cubit: imagePickerCubit!,

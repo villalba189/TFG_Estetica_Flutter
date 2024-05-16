@@ -2,7 +2,6 @@ import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/images.dart';
 import 'package:estetica_app/src/widgets/estetica_botton_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';

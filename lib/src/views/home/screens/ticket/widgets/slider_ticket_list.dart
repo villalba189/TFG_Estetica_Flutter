@@ -2,7 +2,6 @@ import 'package:estetica_app/src/class/bloc_events_class.dart';
 import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/spaces.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
