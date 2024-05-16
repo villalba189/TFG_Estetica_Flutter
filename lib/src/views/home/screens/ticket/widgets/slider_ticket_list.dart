@@ -104,7 +104,7 @@ class SlidableTicketLine extends StatelessWidget {
             ),
             leading: Text("${line.quantity} x"),
             trailing: Text(
-              "${line.subtotal}€",
+              "${line.subtotal.toStringAsFixed(2)}€",
               style: const TextStyle(fontSize: 15, color: AppColors.colorGreen),
             ),
           ),

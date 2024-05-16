@@ -2,6 +2,7 @@ import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/images.dart';
 import 'package:estetica_app/src/widgets/estetica_botton_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
 import 'package:service_repository/service_repository.dart';
@@ -60,28 +61,31 @@ class EsteticaCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product?.name ?? service?.name ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product?.name ?? service?.name ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Precio: ${product?.price.toString() ?? service?.price.toString() ?? 0} €',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
+                        const SizedBox(height: 4),
+                        Text(
+                          'Precio: ${product?.price.toString() ?? service?.price.toString() ?? 0} €',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       product != null
