@@ -102,8 +102,10 @@ class FormularioService extends StatelessWidget {
                     children: [
                       AppSpaces.spaceH24,
                       ImagePickerWidget(
-                        onImageSelected: (_image) {
-                          context.read<ImagePickerCubit>().setImageFile(_image);
+                        onImageSelected: (imageSelect) {
+                          context
+                              .read<ImagePickerCubit>()
+                              .setImageFile(imageSelect);
                         },
                         imagePath: (image == '' ? service?.image : image) ?? '',
                       ),
@@ -183,7 +185,7 @@ class FormularioService extends StatelessWidget {
                                         service?.serviceId ?? id,
                                         nameController.text,
                                         image,
-                                        (_imagePath) {
+                                        (imagePath) {
                                           double price = double.parse(
                                               priceController.text);
                                           if (service != null) {
@@ -199,9 +201,9 @@ class FormularioService extends StatelessWidget {
                                                           descriptionController
                                                               .text,
                                                       price: price,
-                                                      image: _imagePath == ''
+                                                      image: imagePath == ''
                                                           ? service?.image
-                                                          : _imagePath,
+                                                          : imagePath,
                                                     ),
                                                   ),
                                                 );
@@ -217,10 +219,10 @@ class FormularioService extends StatelessWidget {
                                                           descriptionController
                                                               .text,
                                                       price: price,
-                                                      image: _imagePath == ''
+                                                      image: imagePath == ''
                                                           ? AppImages
                                                               .imagenPorDefecto
-                                                          : _imagePath,
+                                                          : imagePath,
                                                     ),
                                                   ),
                                                 );

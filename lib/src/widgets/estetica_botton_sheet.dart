@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
@@ -87,7 +85,7 @@ class CustomBottomSheet extends StatelessWidget {
             if (product != null) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_context) => CreateUpdateProductsScreen(
+                  builder: (contextProd) => CreateUpdateProductsScreen(
                     product: product,
                     bloc: productPageBloc!,
                     cubit: imagePickerCubit!,
@@ -97,7 +95,7 @@ class CustomBottomSheet extends StatelessWidget {
             } else {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (_context) => CreateUpdateServicesScreen(
+                  builder: (contextServ) => CreateUpdateServicesScreen(
                     service: service,
                     bloc: servicePageBloc!,
                     cubit: imagePickerCubit!,
@@ -116,7 +114,6 @@ class CustomBottomSheet extends StatelessWidget {
             ),
           ),
           onTap: () {
-            log('Delete ${product != null ? product!.productId : service!.serviceId}');
             Navigator.of(context).pop();
             context.showDeleteDialog(
               product: product,

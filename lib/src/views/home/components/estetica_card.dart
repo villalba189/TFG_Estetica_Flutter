@@ -60,28 +60,31 @@ class EsteticaCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product?.name ?? service?.name ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product?.name ?? service?.name ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Precio: ${product?.price.toString() ?? service?.price.toString() ?? 0} €',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
+                        const SizedBox(height: 4),
+                        Text(
+                          'Precio: ${product?.price.toString() ?? service?.price.toString() ?? 0} €',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       product != null

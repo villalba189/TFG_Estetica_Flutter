@@ -105,8 +105,10 @@ class FormularioProduct extends StatelessWidget {
                   children: [
                     AppSpaces.spaceH24,
                     ImagePickerWidget(
-                      onImageSelected: (_image) {
-                        context.read<ImagePickerCubit>().setImageFile(_image);
+                      onImageSelected: (imageSlect) {
+                        context
+                            .read<ImagePickerCubit>()
+                            .setImageFile(imageSlect);
                       },
                       imagePath: (image == '' ? product?.image : image) ?? '',
                     ),
@@ -203,7 +205,7 @@ class FormularioProduct extends StatelessWidget {
                                       product?.productId ?? id,
                                       nameController.text,
                                       image,
-                                      (_imagePath) {
+                                      (imagePath) {
                                         if (product != null) {
                                           context.read<ProductPageBloc>().add(
                                                 Event(
@@ -218,9 +220,9 @@ class FormularioProduct extends StatelessWidget {
                                                             .text,
                                                     price: double.tryParse(
                                                         priceController.text),
-                                                    image: _imagePath == ''
+                                                    image: imagePath == ''
                                                         ? product?.image
-                                                        : _imagePath,
+                                                        : imagePath,
                                                     brand: brand,
                                                   ),
                                                 ),
@@ -238,10 +240,10 @@ class FormularioProduct extends StatelessWidget {
                                                             .text,
                                                     price: double.tryParse(
                                                         priceController.text),
-                                                    image: _imagePath == ''
+                                                    image: imagePath == ''
                                                         ? AppImages
                                                             .imagenPorDefecto
-                                                        : _imagePath,
+                                                        : imagePath,
                                                     brand: brand,
                                                   ),
                                                 ),

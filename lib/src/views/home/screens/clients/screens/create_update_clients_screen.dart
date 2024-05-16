@@ -112,8 +112,10 @@ class FormularioClient extends StatelessWidget {
                     children: [
                       AppSpaces.spaceH24,
                       ImagePickerWidget(
-                        onImageSelected: (_image) {
-                          context.read<ImagePickerCubit>().setImageFile(_image);
+                        onImageSelected: (imageSelect) {
+                          context
+                              .read<ImagePickerCubit>()
+                              .setImageFile(imageSelect);
                         },
                         imagePath: (image == '' ? client?.image : image) ?? '',
                       ),
@@ -240,7 +242,7 @@ class FormularioClient extends StatelessWidget {
                                         client?.clientId ?? id,
                                         nameController.text,
                                         image,
-                                        (_imagePath) {
+                                        (imagePath) {
                                           if (client != null) {
                                             context.read<ClientPageBloc>().add(
                                                   Event(
@@ -258,9 +260,9 @@ class FormularioClient extends StatelessWidget {
                                                             .text,
                                                         phone: phoneController
                                                             .text,
-                                                        image: _imagePath == ''
+                                                        image: imagePath == ''
                                                             ? client?.image
-                                                            : _imagePath,
+                                                            : imagePath,
                                                         discount: discount),
                                                   ),
                                                 );
@@ -278,9 +280,9 @@ class FormularioClient extends StatelessWidget {
                                                           emailController.text,
                                                       phone:
                                                           phoneController.text,
-                                                      image: _imagePath == ''
+                                                      image: imagePath == ''
                                                           ? null
-                                                          : _imagePath,
+                                                          : imagePath,
                                                       discount: discount,
                                                     ),
                                                   ),

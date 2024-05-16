@@ -2,7 +2,6 @@ import 'package:estetica_app/src/views/home/screens/clients/bloc/client_page_blo
 import 'package:estetica_app/src/views/home/screens/products/bloc/product_page_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/services/bloc/service_page_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../class/bloc_events_class.dart';

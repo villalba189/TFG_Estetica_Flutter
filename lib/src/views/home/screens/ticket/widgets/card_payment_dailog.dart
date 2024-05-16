@@ -2,10 +2,7 @@ import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/bloc/ticket_bloc.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/payment_success_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
-
-import '../../../../../class/bloc_events_class.dart';
 
 void showPagoTarjetaDialog({
   required BuildContext context,

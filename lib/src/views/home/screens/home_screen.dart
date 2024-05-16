@@ -9,7 +9,6 @@ import 'package:estetica_app/src/views/home/screens/products/bloc/product_page_b
 import 'package:estetica_app/src/views/home/screens/products/screens/create_update_products_screen.dart';
 import 'package:estetica_app/src/views/home/screens/ticket/screens/ticket_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../resources/utils.dart';
@@ -53,7 +52,7 @@ class MyHomePage extends StatelessWidget {
             switch (index) {
               case 0:
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_context) => CreateUpdateProductsScreen(
+                  builder: (contextPro) => CreateUpdateProductsScreen(
                     bloc: context.read<ProductPageBloc>(),
                     cubit: context.read<ImagePickerCubit>(),
                   ),
@@ -61,7 +60,7 @@ class MyHomePage extends StatelessWidget {
                 break;
               case 1:
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_context) => CreateUpdateServicesScreen(
+                  builder: (contextSer) => CreateUpdateServicesScreen(
                     bloc: context.read<ServicePageBloc>(),
                     cubit: context.read<ImagePickerCubit>(),
                   ),
@@ -69,7 +68,7 @@ class MyHomePage extends StatelessWidget {
                 break;
               case 2:
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_context) => CreateUpdateClientsScreen(
+                  builder: (contextCli) => CreateUpdateClientsScreen(
                     bloc: context.read<ClientPageBloc>(),
                     cubit: context.read<ImagePickerCubit>(),
                   ),
@@ -138,7 +137,8 @@ class MyHomePage extends StatelessWidget {
                           )
                         : index == 1
                             ? Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
+                                margin:
+                                    const EdgeInsets.only(left: 20, right: 20),
                                 child: EsteticaTextFormField(
                                   model: EsteticaTextFormFieldModel(
                                       type: EsteticaTextFormFieldType.text,
@@ -152,7 +152,8 @@ class MyHomePage extends StatelessWidget {
                                 ),
                               )
                             : Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
+                                margin:
+                                    const EdgeInsets.only(left: 20, right: 20),
                                 child: EsteticaTextFormField(
                                   model: EsteticaTextFormFieldModel(
                                       type: EsteticaTextFormFieldType.text,
