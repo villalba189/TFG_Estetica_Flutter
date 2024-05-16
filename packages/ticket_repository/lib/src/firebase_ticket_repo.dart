@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../ticket_repository.dart';
@@ -37,7 +35,6 @@ class FirebaseTicketRepo implements TicketRepo {
 
   @override
   Future<void> addTicket(TicketModel ticket) async {
-    log('addTicket');
     try {
       return await ticketsCollection
           .doc(ticket.id)

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/resources/colors.dart';
 import 'package:estetica_app/src/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_show_dialog.dart';
@@ -116,7 +114,6 @@ class CustomBottomSheet extends StatelessWidget {
             ),
           ),
           onTap: () {
-            log('Delete ${product != null ? product!.productId : service!.serviceId}');
             Navigator.of(context).pop();
             context.showDeleteDialog(
               product: product,

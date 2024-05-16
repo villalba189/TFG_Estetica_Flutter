@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/views/home/screens/services/resources/strings.dart';
 import 'package:estetica_app/src/widgets/estetica_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +23,6 @@ class ServicePage extends StatelessWidget {
       listener: (context, state) {
         if (state.eventType == TicketEventType.addTicketLine) {
           if (state.runtimeType == Success) {
-            log(state.data.toString());
             context.showSnackBar(
                 message:
                     'Servicio añadido al ticket ${(state.data as ServiceModel).name}');

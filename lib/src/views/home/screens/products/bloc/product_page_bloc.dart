@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estetica_app/src/views/home/screens/products/resources/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_repository/product_repository.dart';
@@ -117,7 +115,6 @@ class ProductPageBloc extends Bloc<BlocEvent, BlocEvent> {
           emit.call(Loading(event.eventType));
           ProductModel product = event.data as ProductModel;
           try {
-            log('deleteProduct:' + product.productId!);
             _productRepository.deleteImagenStorage(product);
             _productRepository.deleteProduct(product.productId!);
             products.removeWhere(

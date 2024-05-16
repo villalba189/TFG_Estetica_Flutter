@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:client_repository/client_repository.dart';
@@ -39,8 +38,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
   ) : super(Event(TicketEventType.initial)) {
     on<Event>(
       (event, emit) async {
-        log('Event: ${event.eventType}');
-
         void recalculateTotals() {
           total = ticketLineas.fold(
               0, (prev, element) => prev + (element.subtotal));
@@ -81,12 +78,11 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
 
         switch (event.eventType) {
           case TicketEventType.initial:
-            log('initial');
             emit(Loading(event.eventType));
-            ticketLineas.clear(); // Limpiar contenido del ticket al iniciar
-            client = ClientModel(); // Limpiar cliente al iniciar
-            total = 0; // Reiniciar total al iniciar
-            totalDiscount = 0; // Reiniciar total con descuento al iniciar
+            ticketLineas.clear();
+            client = ClientModel();
+            total = 0;
+            totalDiscount = 0;
             try {
               emit(Success(event.eventType, data: ticketLineas));
             } catch (e) {
@@ -94,7 +90,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             }
             break;
           case TicketEventType.editTicket:
-            log('editTick');
             emit(Loading(event.eventType));
             try {
               tick = event.data as bool;
@@ -104,7 +99,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             }
             break;
           case TicketEventType.incrementQuantity:
-            log('incrementQuantity');
             emit(Loading(event.eventType));
             try {
               int index = ticketLineas.indexWhere((l) => l.id == event.data.id);
@@ -132,7 +126,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             break;
 
           case TicketEventType.decrementQuantity:
-            log('decrementQuantity');
             emit(Loading(event.eventType));
             try {
               int index = ticketLineas.indexWhere((l) => l.id == event.data.id);
@@ -163,7 +156,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             break;
 
           case TicketEventType.deleteTicketLine:
-            log('deleteTicketLine');
             emit(Loading(event.eventType));
             try {
               ticketLineas
@@ -171,13 +163,11 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
               recalculateTotals();
               emit(Success(event.eventType, data: ticketLineas));
             } catch (e) {
-              log('Error deleting ticket line: $e');
               emit(Failure(event.eventType, errorType: e.toString()));
             }
             break;
 
           case TicketEventType.addTicketLine:
-            log('addTicketLine');
             emit(Loading(event.eventType));
             tick = true;
             dynamic item = event.data['type'] == 'product'
@@ -191,7 +181,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             break;
 
           case TicketEventType.addClient:
-            log('addClient');
             emit.call(Loading(event.eventType));
             tick = true;
             client = event.data as ClientModel;
@@ -209,13 +198,11 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             break;
 
           case TicketEventType.deleteTicket:
-            log('deleteTicket');
             emit.call(Loading(event.eventType));
             try {
               ticketRepository.deleteTicket(event.data as TicketModel);
               emit.call(Success(event.eventType));
             } catch (e) {
-              log('deleteTicket error: $e');
               emit.call(Failure(event.eventType, errorType: e.toString()));
             }
             break;
