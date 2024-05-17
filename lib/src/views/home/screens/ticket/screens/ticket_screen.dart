@@ -63,12 +63,14 @@ class TicketScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Column(
-                    children: ticketLines
-                        .map(
-                          (line) => SlidableTicketLine(line: line),
-                        )
-                        .toList(),
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: ticketLines
+                          .map(
+                            (line) => SlidableTicketLine(line: line),
+                          )
+                          .toList(),
+                    ),
                   );
                 }
               },
