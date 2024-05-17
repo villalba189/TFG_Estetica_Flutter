@@ -239,7 +239,6 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
                 ..html = emailBody;
 
               await send(message, smtpServer);
-              add(Event(TicketEventType.saveTicket));
             } catch (e) {
               emit(Failure(event.eventType, errorType: e.toString()));
             }

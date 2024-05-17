@@ -40,21 +40,19 @@ class ServicePage extends StatelessWidget {
               child: Text(ServicesStrings.errorLoadingServices),
             );
           case Success:
-            return Center(
-              child: Wrap(
-                alignment: WrapAlignment.spaceEvenly,
-                children: servicesFiltered
-                    .map(
-                      (service) => GestureDetector(
-                          onTap: () {
-                            context.read<TicketBloc>().add(Event(
-                                TicketEventType.addTicketLine,
-                                data: {'type': 'service', 'service': service}));
-                          },
-                          child: EsteticaCard(service: service)),
-                    )
-                    .toList(),
-              ),
+            return Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: servicesFiltered
+                  .map(
+                    (service) => GestureDetector(
+                        onTap: () {
+                          context.read<TicketBloc>().add(Event(
+                              TicketEventType.addTicketLine,
+                              data: {'type': 'service', 'service': service}));
+                        },
+                        child: EsteticaCard(service: service)),
+                  )
+                  .toList(),
             );
 
           default:

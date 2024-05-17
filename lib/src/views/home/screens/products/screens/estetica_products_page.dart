@@ -39,21 +39,19 @@ class ProductPage extends StatelessWidget {
               child: Text(ProductsStrings.errorLoadingProducts),
             );
           case Success:
-            return Center(
-              child: Wrap(
-                alignment: WrapAlignment.spaceEvenly,
-                children: productsFiltered
-                    .map(
-                      (product) => GestureDetector(
-                          onTap: () {
-                            context.read<TicketBloc>().add(Event(
-                                TicketEventType.addTicketLine,
-                                data: {'type': 'product', 'product': product}));
-                          },
-                          child: EsteticaCard(product: product)),
-                    )
-                    .toList(),
-              ),
+            return Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: productsFiltered
+                  .map(
+                    (product) => GestureDetector(
+                        onTap: () {
+                          context.read<TicketBloc>().add(Event(
+                              TicketEventType.addTicketLine,
+                              data: {'type': 'product', 'product': product}));
+                        },
+                        child: EsteticaCard(product: product)),
+                  )
+                  .toList(),
             );
           default:
             return const Center(

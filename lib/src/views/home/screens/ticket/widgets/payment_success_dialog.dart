@@ -53,6 +53,9 @@ void showPagoRealizadoSuccessDialog({
                   onTapFunction: () {
                     Navigator.pop(context);
                     bloc.add(
+                      Event(TicketEventType.saveTicket),
+                    );
+                    bloc.add(
                       Event(TicketEventType.sendTicket),
                     );
                   },

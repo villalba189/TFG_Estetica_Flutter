@@ -20,8 +20,8 @@ class EsteticaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      height: 180,
-      width: 180,
+      height: 125,
+      width: 125,
       child: Stack(
         children: [
           ClipRRect(
@@ -71,11 +71,11 @@ class EsteticaCard extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
-                          overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.fade,
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Precio: ${product?.price.toString() ?? service?.price.toString() ?? 0} €',
+                          '${product?.price.toString() ?? service?.price.toString() ?? 0} €',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
