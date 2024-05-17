@@ -20,8 +20,8 @@ class EsteticaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      height: 125,
-      width: 125,
+      height: 150,
+      width: 150,
       child: Stack(
         children: [
           ClipRRect(
