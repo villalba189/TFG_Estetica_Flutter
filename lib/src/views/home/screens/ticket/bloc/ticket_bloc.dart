@@ -18,6 +18,7 @@ enum TicketEventType {
   sendTicket,
   cashPayment,
   saveTicket,
+  removeClient,
 }
 
 class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
@@ -167,6 +168,13 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
             }
             break;
 
+          case TicketEventType.removeClient:
+            emit(Loading(event.eventType));
+            client = ClientModel();
+            totalDiscount = total;
+            emit(Success(event.eventType, data: client));
+            break;
+
           case TicketEventType.addTicketLine:
             emit(Loading(event.eventType));
             tick = true;
@@ -230,10 +238,10 @@ class TicketBloc extends Bloc<BlocEvent, BlocEvent> {
               );
 
               final smtpServer =
-                  gmail('pp.villa.agu@gmail.com', 'qpaf yrbd ermk gfhe');
+                  gmail('esteticabeatrizapp@gmail.com', 'jivc fsjt ebyx trss');
               final message = Message()
-                ..from =
-                    const Address('pp.villa.agu@gmail.com', 'Estetica Beatriz')
+                ..from = const Address(
+                    'esteticabeatrizapp@gmail.com', 'Estetica Beatriz')
                 ..recipients.add(client.email!)
                 ..subject = 'Ticket de compra'
                 ..html = emailBody;
@@ -284,7 +292,7 @@ String generateEmailBody(
       <h1 style="color: #333;">Estética Beatriz</h1>
       <p>Avinguda de Sant Andreu, 13A, 03294 Foia Elx, Alicante</p>
       <p>Teléfono: 651500922</p>
-      <p>Email: info@esteticabeatriz.com</p>
+      <p>Email: EsteticaBeatrizApp@gmail.com</p>
       <hr style="border: 0; border-top: 1px solid #ddd;">
       <h2 style="color: #333;">Ticket de Compra</h2>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">

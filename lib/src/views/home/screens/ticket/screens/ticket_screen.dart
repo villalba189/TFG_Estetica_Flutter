@@ -7,6 +7,7 @@ import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/paymant_dialog.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
@@ -40,18 +41,35 @@ class TicketScreen extends StatelessWidget {
                     .read<HomeBloc>()
                     .add(Event(HomeEventsType.selectedIndex, data: 2));
               },
-              child: CircleAvatar(
-                backgroundColor: AppColors.primaryColorLight,
-                backgroundImage: client.image != null
-                    ? NetworkImage(client.image as String)
-                    : null,
-                child: client.image == null
-                    ? const Icon(
-                        Icons.person,
-                        size: 30,
-                        color: AppColors.colorWhite,
-                      )
-                    : null,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.primaryColorLight,
+                      backgroundImage: client.image != null
+                          ? NetworkImage(client.image as String)
+                          : null,
+                      child: client.image == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 30,
+                              color: AppColors.colorWhite,
+                            )
+                          : null,
+                    ),
+                  ),
+                  AppSpaces.spaceW10,
+                  GestureDetector(
+                      onTap: () {
+                        context
+                            .read<TicketBloc>()
+                            .add(Event(TicketEventType.removeClient));
+                      },
+                      child: Icon(
+                        Icons.person_remove,
+                        size: 15,
+                      )),
+                ],
               ),
             ),
           ),

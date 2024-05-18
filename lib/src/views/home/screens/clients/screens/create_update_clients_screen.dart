@@ -185,7 +185,7 @@ class FormularioClient extends StatelessWidget {
                       ),
                       AppSpaces.spaceH24,
                       DropdownButtonFormField<int>(
-                        value: client?.discount ?? 0,
+                        value: discount,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: ClientStrings.discount,

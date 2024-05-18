@@ -9,21 +9,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.6
-  font_awesome_flutter: ^10.6.0
   path: ^1.8.3
-  mailer: ^6.1.0
   image_picker: ^1.0.4
-
+  # Email
+  mailer: ^6.1.0
   # Navigation
   google_nav_bar: ^5.0.6
   # UI
   flutter_slidable: ^3.1.0
+  cupertino_icons: ^1.0.6
+  font_awesome_flutter: ^10.6.0
   # BLOC
   flutter_bloc: ^8.1.1
   bloc: ^8.1.1
-
   #Firebase
   firebase_core: ^2.9.0
 

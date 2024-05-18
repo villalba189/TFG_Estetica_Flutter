@@ -1,5 +1,5 @@
 class ClientStrings {
-  static const String addClient = 'Agregar cliente';
+  static const String addClient = 'Añadir cliente';
   static const String updateClient = 'Actualizar cliente';
   static const String nameIsRequired = 'El nombre es requerido';
   static const String invalidName = 'Nombre no válido';

@@ -24,7 +24,9 @@ import 'services/screens/create_update_services_screen.dart';
 import 'services/screens/estetica_services_page.dart';
 
 class MyHomePage extends StatelessWidget {
-  final TextEditingController textController = TextEditingController();
+  final TextEditingController textControllerProduct = TextEditingController();
+  final TextEditingController textControllerService = TextEditingController();
+  final TextEditingController textControllerClient = TextEditingController();
   MyHomePage({super.key});
 
   final List<Widget> esteticaPages = [
@@ -125,7 +127,7 @@ class MyHomePage extends StatelessWidget {
                                   model: EsteticaTextFormFieldModel(
                                       type: EsteticaTextFormFieldType.text,
                                       hintText: AppStrings.buscar,
-                                      controller: textController),
+                                      controller: textControllerProduct),
                                   onChanged: (value) {
                                     context.read<ProductPageBloc>().add(Event(
                                         ProductPageEventsType.filterByName,
@@ -143,7 +145,7 @@ class MyHomePage extends StatelessWidget {
                                   model: EsteticaTextFormFieldModel(
                                       type: EsteticaTextFormFieldType.text,
                                       hintText: 'Buscar...',
-                                      controller: textController),
+                                      controller: textControllerService),
                                   onChanged: (value) {
                                     context.read<ServicePageBloc>().add(Event(
                                         ServicePageEventsType.filterByName,
@@ -158,7 +160,7 @@ class MyHomePage extends StatelessWidget {
                                   model: EsteticaTextFormFieldModel(
                                       type: EsteticaTextFormFieldType.text,
                                       hintText: 'Buscar...',
-                                      controller: textController),
+                                      controller: textControllerClient),
                                   onChanged: (value) {
                                     context.read<ClientPageBloc>().add(Event(
                                         ClientPageEventsType.filterByName,

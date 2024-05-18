@@ -104,7 +104,7 @@ SliverAppBar esteticaBar(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5.0))),
             ),
-            child: const Icon(Icons.rotate_left_sharp, color: Colors.white),
+            child: const Icon(Icons.sync_alt_outlined, color: Colors.white),
           ),
         ),
       ]
