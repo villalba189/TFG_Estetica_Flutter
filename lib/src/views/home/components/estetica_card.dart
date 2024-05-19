@@ -68,10 +68,10 @@ class EsteticaCard extends StatelessWidget {
                           product?.name ?? service?.name ?? '',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
-                          overflow: TextOverflow.fade,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         Text(
