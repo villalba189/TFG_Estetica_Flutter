@@ -101,7 +101,8 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           try {
             _clientRepository.deleteClient(client.clientId!);
             _clientRepository.deleteImagenStorage(client);
-            clients.removeWhere((client) => client.clientId == client.clientId);
+            clients
+                .removeWhere((element) => element.clientId == client.clientId);
             emit.call(Success(event.eventType));
           } catch (e) {
             emit.call(Failure(event.eventType, errorType: e.toString()));

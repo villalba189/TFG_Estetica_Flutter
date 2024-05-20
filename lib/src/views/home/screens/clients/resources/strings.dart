@@ -9,7 +9,7 @@ class ClientStrings {
 
   static const String errorLoadingClients = 'Error cargando los clientes';
 
-  static const String name = 'Nombre';
+  static const String name = 'Nombre*';
   static const String surname = 'Apellido';
   static const String email = 'Correo';
   static const String phone = 'Teléfono';

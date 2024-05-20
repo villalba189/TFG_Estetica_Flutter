@@ -34,6 +34,8 @@ class CreateUpdateClientsScreen extends StatelessWidget {
         TextEditingController(text: client?.phone ?? '');
     final TextEditingController surnameController =
         TextEditingController(text: client?.surname ?? '');
+    final TextEditingController discountController =
+        TextEditingController(text: client?.discount.toString() ?? '0');
 
     return MultiBlocProvider(
       providers: [
@@ -45,6 +47,7 @@ class CreateUpdateClientsScreen extends StatelessWidget {
         surnameController: surnameController,
         emailController: emailController,
         phoneController: phoneController,
+        discountController: discountController,
         client: client,
       ),
     );
@@ -58,6 +61,7 @@ class FormularioClient extends StatelessWidget {
     required this.surnameController,
     required this.emailController,
     required this.phoneController,
+    required this.discountController,
     required this.client,
   });
 
@@ -65,11 +69,11 @@ class FormularioClient extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController surnameController;
+  final TextEditingController discountController;
   final ClientModel? client;
 
   @override
   Widget build(BuildContext context) {
-    int discount = client?.discount ?? 0;
     final ClientPageBloc read = context.read<ClientPageBloc>();
     bool nameErrorVisible =
         context.select((ClientPageBloc bloc) => bloc.nameErrorVisible);
@@ -185,7 +189,9 @@ class FormularioClient extends StatelessWidget {
                       ),
                       AppSpaces.spaceH24,
                       DropdownButtonFormField<int>(
-                        value: discount,
+                        value: discountController.text.isEmpty
+                            ? 0
+                            : int.parse(discountController.text),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: ClientStrings.discount,
@@ -214,7 +220,7 @@ class FormularioClient extends StatelessWidget {
                           ),
                         ],
                         onChanged: (value) {
-                          discount = value!;
+                          discountController.text = value.toString();
                         },
                         dropdownColor: AppColors.colorWhite,
                       ),
@@ -249,21 +255,22 @@ class FormularioClient extends StatelessWidget {
                                                     ClientPageEventsType
                                                         .updateClient,
                                                     data: ClientModel(
-                                                        clientId:
-                                                            client!.clientId,
-                                                        name:
-                                                            nameController.text,
-                                                        surname:
-                                                            surnameController
-                                                                .text,
-                                                        email: emailController
-                                                            .text,
-                                                        phone: phoneController
-                                                            .text,
-                                                        image: imagePath == ''
-                                                            ? client?.image
-                                                            : imagePath,
-                                                        discount: discount),
+                                                      clientId:
+                                                          client!.clientId,
+                                                      name: nameController.text,
+                                                      surname: surnameController
+                                                          .text,
+                                                      email:
+                                                          emailController.text,
+                                                      phone:
+                                                          phoneController.text,
+                                                      image: imagePath == ''
+                                                          ? client?.image
+                                                          : imagePath,
+                                                      discount: int.parse(
+                                                          discountController
+                                                              .text),
+                                                    ),
                                                   ),
                                                 );
                                           } else {
@@ -283,7 +290,9 @@ class FormularioClient extends StatelessWidget {
                                                       image: imagePath == ''
                                                           ? null
                                                           : imagePath,
-                                                      discount: discount,
+                                                      discount: int.parse(
+                                                          discountController
+                                                              .text),
                                                     ),
                                                   ),
                                                 );

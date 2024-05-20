@@ -2,8 +2,8 @@ class ProductsStrings {
   static const String updateProduct = 'Actualizar producto';
   static const String addProduct = 'Añadir producto';
 
-  static const String productName = 'Nombre del producto';
-  static const String productPrice = 'Precio del producto';
+  static const String productName = 'Nombre del producto*';
+  static const String productPrice = 'Precio del producto*';
   static const String productDescription = 'Descripción del producto';
 
   static const String productHintName = 'Ej: Corte de pelo';

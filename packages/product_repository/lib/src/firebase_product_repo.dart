@@ -69,9 +69,6 @@ class FirebaseProductRepo implements ProductRepo {
       String productId, String name, String imagePath) async {
     try {
       final file = File(imagePath);
-      if (!file.existsSync()) {
-        throw FileSystemException("Archivo no encontrado: $imagePath");
-      }
 
       final ref = this.ref.child('products').child(name).child(productId);
       var task = await ref.putFile(file);

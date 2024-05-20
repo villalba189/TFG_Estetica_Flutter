@@ -7,6 +7,7 @@ import 'package:service_repository/service_repository.dart';
 
 import '../../../../../class/bloc_events_class.dart';
 import '../../../../../components/estetica_appbar.dart';
+import '../../../../../resources/utils.dart';
 import '../../../../../widgets/estetica_button.dart';
 import '../../../../../widgets/estetica_text_form_field.dart';
 import '../../../blocs/image_picker_cubit.dart';
@@ -81,165 +82,177 @@ class FormularioService extends StatelessWidget {
 
     BlocEvent state = context.select((ServicePageBloc bloc) => bloc.state);
 
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            esteticaBar(
-              titulo: service != null
-                  ? ServicesStrings.updateService
-                  : ServicesStrings.addService,
-              leadingActive: true,
-              actionsActive: false,
-              ticketActive: false,
-              context: context,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    children: [
-                      AppSpaces.spaceH24,
-                      ImagePickerWidget(
-                        onImageSelected: (imageSelect) {
-                          context
-                              .read<ImagePickerCubit>()
-                              .setImageFile(imageSelect);
-                        },
-                        imagePath: (image == '' ? service?.image : image) ?? '',
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.text,
-                          controller: nameController,
-                          labelText: ServicesStrings.serviceName,
-                          hintText: ServicesStrings.serviceHintName,
-                          errorText: nameErrorVisible ? nameError : null,
+    return GestureDetector(
+      onTap: () => clearFocusAndHideKeyboard(context),
+      child: Scaffold(
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              esteticaBar(
+                titulo: service != null
+                    ? ServicesStrings.updateService
+                    : ServicesStrings.addService,
+                leadingActive: true,
+                actionsActive: false,
+                ticketActive: false,
+                context: context,
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      children: [
+                        AppSpaces.spaceH24,
+                        ImagePickerWidget(
+                          onImageSelected: (imageSelect) {
+                            context
+                                .read<ImagePickerCubit>()
+                                .setImageFile(imageSelect);
+                          },
+                          imagePath:
+                              (image == '' ? service?.image : image) ?? '',
                         ),
-                        onChanged: (value) {
-                          read.add(Event(
-                            ServicePageErrorsType.serviceNameNoValido,
-                            data: value,
-                          ));
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.text,
-                          controller: descriptionController,
-                          labelText: ServicesStrings.serviceDescription,
-                          hintText: ServicesStrings.serviceHintDescription,
-                          errorText:
-                              descriptionErrorVisible ? descriptionError : null,
-                        ),
-                        onChanged: (value) {
-                          read.add(Event(
-                            ServicePageErrorsType.serviceDescriptionNoValido,
-                            data: value,
-                          ));
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      EsteticaTextFormField(
-                        model: EsteticaTextFormFieldModel(
-                          type: EsteticaTextFormFieldType.number,
-                          controller: priceController,
-                          labelText: ServicesStrings.servicePrice,
-                          hintText: ServicesStrings.serviceHintPrice,
-                          errorText: priceErrorVisible ? priceError : null,
-                        ),
-                        onChanged: (value) {
-                          read.add(Event(
-                            ServicePageErrorsType.servicePriceNoValido,
-                            data: value,
-                          ));
-                        },
-                      ),
-                      AppSpaces.spaceH24,
-                      SizedBox(
-                        width: double.infinity,
-                        child: EsteticaButton(
-                          model: EsteticaButtonModel(
-                            text: service != null
-                                ? ServicesStrings.updateService
-                                : ServicesStrings.addService,
-                            type: EsteticaButtonType.primary,
-                            isLoading: state is Loading,
-                            isEnable: nameController.text.isNotEmpty &&
-                                priceController.text.isNotEmpty &&
-                                !nameErrorVisible &&
-                                !descriptionErrorVisible &&
-                                !priceErrorVisible,
+                        AppSpaces.spaceH24,
+                        EsteticaTextFormField(
+                          model: EsteticaTextFormFieldModel(
+                            type: EsteticaTextFormFieldType.text,
+                            controller: nameController,
+                            labelText: ServicesStrings.serviceName,
+                            hintText: ServicesStrings.serviceHintName,
+                            errorText: nameErrorVisible ? nameError : null,
                           ),
-                          onTapFunction: () {
-                            String id = FirebaseServiceRepo()
-                                .servicesCollection
-                                .doc()
-                                .id;
-                            context.read<ServicePageBloc>().add(
-                                  Event(ServicePageEventsType.addImagenStorage,
-                                      data: [
-                                        service?.serviceId ?? id,
-                                        nameController.text,
-                                        image,
-                                        (imagePath) {
-                                          double price = double.parse(
-                                              priceController.text);
-                                          if (service != null) {
-                                            context.read<ServicePageBloc>().add(
-                                                  Event(
-                                                    ServicePageEventsType
-                                                        .updateService,
-                                                    data: ServiceModel(
-                                                      serviceId:
-                                                          service!.serviceId,
-                                                      name: nameController.text,
-                                                      description:
-                                                          descriptionController
-                                                              .text,
-                                                      price: price,
-                                                      image: imagePath == ''
-                                                          ? service?.image
-                                                          : imagePath,
-                                                    ),
-                                                  ),
-                                                );
-                                          } else {
-                                            context.read<ServicePageBloc>().add(
-                                                  Event(
-                                                    ServicePageEventsType
-                                                        .addService,
-                                                    data: ServiceModel(
-                                                      serviceId: id,
-                                                      name: nameController.text,
-                                                      description:
-                                                          descriptionController
-                                                              .text,
-                                                      price: price,
-                                                      image: imagePath == ''
-                                                          ? AppImages
-                                                              .imagenPorDefecto
-                                                          : imagePath,
-                                                    ),
-                                                  ),
-                                                );
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
-                                      ]),
-                                );
+                          onChanged: (value) {
+                            read.add(Event(
+                              ServicePageErrorsType.serviceNameNoValido,
+                              data: value,
+                            ));
                           },
                         ),
-                      )
-                    ],
-                  ),
-                )
-              ]),
-            )
-          ],
+                        AppSpaces.spaceH24,
+                        EsteticaTextFormField(
+                          model: EsteticaTextFormFieldModel(
+                            type: EsteticaTextFormFieldType.text,
+                            controller: descriptionController,
+                            labelText: ServicesStrings.serviceDescription,
+                            hintText: ServicesStrings.serviceHintDescription,
+                            errorText: descriptionErrorVisible
+                                ? descriptionError
+                                : null,
+                          ),
+                          onChanged: (value) {
+                            read.add(Event(
+                              ServicePageErrorsType.serviceDescriptionNoValido,
+                              data: value,
+                            ));
+                          },
+                        ),
+                        AppSpaces.spaceH24,
+                        EsteticaTextFormField(
+                          model: EsteticaTextFormFieldModel(
+                            type: EsteticaTextFormFieldType.number,
+                            controller: priceController,
+                            labelText: ServicesStrings.servicePrice,
+                            hintText: ServicesStrings.serviceHintPrice,
+                            errorText: priceErrorVisible ? priceError : null,
+                          ),
+                          onChanged: (value) {
+                            read.add(Event(
+                              ServicePageErrorsType.servicePriceNoValido,
+                              data: value,
+                            ));
+                          },
+                        ),
+                        AppSpaces.spaceH24,
+                        SizedBox(
+                          width: double.infinity,
+                          child: EsteticaButton(
+                            model: EsteticaButtonModel(
+                              text: service != null
+                                  ? ServicesStrings.updateService
+                                  : ServicesStrings.addService,
+                              type: EsteticaButtonType.primary,
+                              isLoading: state is Loading,
+                              isEnable: nameController.text.isNotEmpty &&
+                                  priceController.text.isNotEmpty &&
+                                  !nameErrorVisible &&
+                                  !descriptionErrorVisible &&
+                                  !priceErrorVisible,
+                            ),
+                            onTapFunction: () {
+                              String id = FirebaseServiceRepo()
+                                  .servicesCollection
+                                  .doc()
+                                  .id;
+                              context.read<ServicePageBloc>().add(
+                                    Event(
+                                        ServicePageEventsType.addImagenStorage,
+                                        data: [
+                                          service?.serviceId ?? id,
+                                          nameController.text,
+                                          image,
+                                          (imagePath) {
+                                            double price = double.parse(
+                                                priceController.text);
+                                            if (service != null) {
+                                              context
+                                                  .read<ServicePageBloc>()
+                                                  .add(
+                                                    Event(
+                                                      ServicePageEventsType
+                                                          .updateService,
+                                                      data: ServiceModel(
+                                                        serviceId:
+                                                            service!.serviceId,
+                                                        name:
+                                                            nameController.text,
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                        price: price,
+                                                        image: imagePath == ''
+                                                            ? service?.image
+                                                            : imagePath,
+                                                      ),
+                                                    ),
+                                                  );
+                                            } else {
+                                              context
+                                                  .read<ServicePageBloc>()
+                                                  .add(
+                                                    Event(
+                                                      ServicePageEventsType
+                                                          .addService,
+                                                      data: ServiceModel(
+                                                        serviceId: id,
+                                                        name:
+                                                            nameController.text,
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                        price: price,
+                                                        image: imagePath == ''
+                                                            ? AppImages
+                                                                .imagenPorDefecto
+                                                            : imagePath,
+                                                      ),
+                                                    ),
+                                                  );
+                                            }
+                                            Navigator.of(context).pop();
+                                          },
+                                        ]),
+                                  );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ]),
+              )
+            ],
+          ),
         ),
       ),
     );

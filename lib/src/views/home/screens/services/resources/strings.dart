@@ -2,8 +2,8 @@ class ServicesStrings {
   static const String updateService = 'Actualizar servicio';
   static const String addService = 'Añadir servicio';
 
-  static const String serviceName = 'Nombre del servicio';
-  static const String servicePrice = 'Precio del servicio';
+  static const String serviceName = 'Nombre del servicio*';
+  static const String servicePrice = 'Precio del servicio*';
   static const String serviceDescription = 'Descripción del servicio';
 
   static const String serviceHintName = 'Ej: Pintar las uñas';

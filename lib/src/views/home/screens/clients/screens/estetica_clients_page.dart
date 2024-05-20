@@ -13,6 +13,9 @@ class ClientPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ClientModel> clientsFiltered =
+        context.select((ClientPageBloc bloc) => bloc.clientsFiltered);
+    BlocEvent stateClient = context.select((ClientPageBloc bloc) => bloc.state);
     return BlocConsumer<TicketBloc, BlocEvent>(
       listener: (context, state) {
         if (state.eventType == TicketEventType.addClient) {
@@ -24,11 +27,6 @@ class ClientPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        List<ClientModel> clientsFiltered =
-            context.select((ClientPageBloc bloc) => bloc.clientsFiltered);
-        BlocEvent stateClient =
-            context.select((ClientPageBloc bloc) => bloc.state);
-
         switch (stateClient.runtimeType) {
           case Success:
             return Column(
