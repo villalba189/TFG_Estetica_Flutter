@@ -7,7 +7,6 @@ import 'package:estetica_app/src/views/home/screens/ticket/widgets/slider_ticket
 import 'package:estetica_app/src/views/home/screens/ticket/widgets/paymant_dialog.dart';
 import 'package:estetica_app/src/widgets/estetica_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ticket_repository/ticket_repository.dart';
 
@@ -65,7 +64,7 @@ class TicketScreen extends StatelessWidget {
                             .read<TicketBloc>()
                             .add(Event(TicketEventType.removeClient));
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.person_remove,
                         size: 15,
                       )),
