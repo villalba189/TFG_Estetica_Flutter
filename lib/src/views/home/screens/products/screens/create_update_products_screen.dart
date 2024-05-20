@@ -35,7 +35,7 @@ class CreateUpdateProductsScreen extends StatelessWidget {
     final TextEditingController priceController =
         TextEditingController(text: product?.price?.toStringAsFixed(2) ?? '');
     final TextEditingController brandController =
-        TextEditingController(text: product?.brand ?? '');
+        TextEditingController(text: product?.brand ?? 'Todas');
 
     return MultiBlocProvider(
       providers: [
@@ -170,6 +170,7 @@ class FormularioProduct extends StatelessWidget {
                       ),
                       AppSpaces.spaceH24,
                       DropdownButtonFormField<String>(
+                        value: brandController.text,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: AppColors.colorWhite,

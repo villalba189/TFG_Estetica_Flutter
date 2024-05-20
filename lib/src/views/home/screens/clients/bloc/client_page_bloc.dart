@@ -64,9 +64,13 @@ class ClientPageBloc extends Bloc<BlocEvent, BlocEvent> {
           }
           try {
             clientsFiltered = clients
-                .where((element) => element.name!
-                    .toLowerCase()
-                    .contains((event.data as String).toLowerCase()))
+                .where((element) =>
+                    element.name!
+                        .toLowerCase()
+                        .contains((event.data as String).toLowerCase()) ||
+                    element.surname!
+                        .toLowerCase()
+                        .contains((event.data as String).toLowerCase()))
                 .toList();
             emit.call(Success(event.eventType));
           } catch (e) {
